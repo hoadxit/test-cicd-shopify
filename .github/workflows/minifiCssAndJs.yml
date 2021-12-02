@@ -8,5 +8,5 @@ jobs:
       - name: minifi-css
         uses: devatherock/minify-js@v1.0.3
         with:
-            directory: theme.css
+            directory: src/theme.css
        
