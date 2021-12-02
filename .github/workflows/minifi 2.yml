@@ -7,4 +7,4 @@ jobs:
       - name: minifi-css-js
         uses: devatherock/minify-js@v1.0.3
         with:
-          directory: '../../theme.css'
+          directory: 'testCICD/theme.css'
