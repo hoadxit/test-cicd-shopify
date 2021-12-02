@@ -8,5 +8,7 @@ jobs:
       - name: minifi-css
         uses: devatherock/minify-js@v1.0.3
         with:
-            directory: src/theme.css
+            directory: 'theme.css'
+            output: 'minify'  
+            add_suffix: true  
        
