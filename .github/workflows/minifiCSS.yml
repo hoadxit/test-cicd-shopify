@@ -9,7 +9,7 @@ jobs:
       - name: Auto Minify Css
         uses: nizarmah/auto-minify@v2.1
         with: 
-          directory: "./theme.css ./theme.js"
+          directory: " ./theme.js"
 
       - name: Auto committing minified files
         uses: stefanzweifel/git-auto-commit-action@v4
