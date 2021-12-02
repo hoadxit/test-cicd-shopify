@@ -5,10 +5,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Run a one-line script
         uses: devatherock/minify-js@v1.0.3
         with:
           directory: "./theme.css"
-          output: ""
-          add_suffix: ""
