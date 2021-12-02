@@ -6,10 +6,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Auto Minify Css
+      - name: Auto Minify JS
         uses: nizarmah/auto-minify@v2.1
         with: 
           directory: "./theme.js"
+          
+      - name: Auto Minify Css
+        uses: nizarmah/auto-minify@v2.1
+        with: 
+          directory: "./theme.css"
 
       - name: Auto committing minified files
         uses: stefanzweifel/git-auto-commit-action@v4
