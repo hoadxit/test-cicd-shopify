@@ -1,0 +1,12 @@
+
+name: minifiCssAndJs
+on: push
+jobs:
+  my-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: minifi-css
+        uses: devatherock/minify-js@v1.0.3
+        with:
+            directory: theme.css
+       
