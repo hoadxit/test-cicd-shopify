@@ -7,7 +7,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Run a one-line script
+      - name: Minifi-css-js
         uses: devatherock/minify-js@v1.0.3
         with:
           directory: "./theme.css"
