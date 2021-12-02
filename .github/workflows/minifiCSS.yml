@@ -1,13 +1,15 @@
 name: CI
-on:
-  push:
-    branches: [ main ]
+on: push
+
   workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Minifi
+      - uses: actions/checkout@v2
+      - name: Run a one-line script
         uses: devatherock/minify-js@v1.0.3
         with:
           directory: "./theme.css"
