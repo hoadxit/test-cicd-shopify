@@ -4,15 +4,19 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2 
 
       - name: Auto Minify JS
         uses: nizarmah/auto-minify@v2.1
         with: 
-          directory: ['./theme.css', './theme.js']
+          directory: "assets/theme.js"
           
+      - name: Auto Minify Css
+        uses: nizarmah/auto-minify@v2.1
+        with: 
+          directory: "assets/theme.css"
+
       - name: Auto committing minified files
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "Github Action: Auto Minified JS and CSS files"
-          branch: ${{ github.ref }}
