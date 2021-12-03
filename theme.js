@@ -3,7 +3,7 @@
  * File js test
  * ===========================================================================================
  */
-var testJs = testJs || {};
+var testJsNew = testJsNew || {};
 
 (function() {
     "use strict";
