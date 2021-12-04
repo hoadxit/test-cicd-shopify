@@ -9,12 +9,12 @@ jobs:
       - name: Auto Minify JS
         uses: nizarmah/auto-minify@v2.1
         with: 
-          directory: "assets/theme.js"
+          directory: "theme.js"
           
       - name: Auto Minify Css
         uses: nizarmah/auto-minify@v2.1
         with: 
-          directory: "assets/theme.css"
+          directory: "theme.css"
 
       - name: Auto committing minified files
         uses: stefanzweifel/git-auto-commit-action@v4
