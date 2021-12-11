@@ -1,0 +1,20 @@
+
+  
+name: 'Deploy Preview'
+on:
+  pull_request:
+    branches: [ master ]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: 'Deployment'
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: 'Deploy Theme'
+        uses: wyugen/shopify-theme-action@v0.3
+        with:
+          SHOPIFY_STORE: ${{secrets.DP_SHOPIFY_STORE}}
+          SHOPIFY_APP_PW: ${{secrets.DP_SHOPIFY_APP_PW}}
+          SHOPIFY_API_KEY: ${{secrets.DP_SHOPIFY_API_KEY}}
+          github-token: ${{secrets.GITHUB_TOKEN}}
