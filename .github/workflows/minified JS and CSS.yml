@@ -18,8 +18,11 @@ jobs:
   minify:
     runs-on: ubuntu-latest
     needs: check_change
-    if: needs.check_change.steps.changed-files.outputs.any_changed == 'true'
     steps:
+      - name: Condition Minify
+        if: needs.check_change.steps.changed-files.outputs.any_changed == 'true'
+        run: foo
+      
       - name: Auto Minify JS
         if: contains(needs.check_change.steps.changed-files.outputs.all_modified_files, 'theme.js')
         uses: nizarmah/auto-minify@v2.1
