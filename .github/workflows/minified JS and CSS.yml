@@ -4,13 +4,10 @@ jobs:
   check_change:
     runs-on: ubuntu-latest
     outputs: 
-      list_files: ${{steps.files.outputs.all}}
+      list_files: ${{steps.changed-files.outputs.all}}
     steps:
       - uses: actions/checkout@v2 
-        with:
-          fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
-      - run:
-          echo ${{ github.event[0].commit }}
+      
       - name: Get changed files
         id: changed-files
         uses: jitterbit/get-changed-files@v1
