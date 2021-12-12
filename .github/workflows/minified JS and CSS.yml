@@ -12,8 +12,6 @@ jobs:
       list_files: ${{steps.changed-files.outputs.all_modified_files}}
     steps:
       - uses: actions/checkout@v2 
-        with:
-          fetch-depth: 1  # OR "2" -> To retrieve the preceding commit.
 
       - name: Get changed files
         id: changed-files
