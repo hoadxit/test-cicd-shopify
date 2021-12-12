@@ -17,6 +17,7 @@ jobs:
              theme.css
   minify:
     runs-on: ubuntu-latest
+    if: needs.check_change.steps.changed-files.outputs.any_changed == 'true'
     steps:
       - name: Auto Minify JS
         if: contains(needs.check_change.steps.changed-files.outputs.all_modified_files, 'theme.js')
@@ -31,7 +32,6 @@ jobs:
           directory: "theme.css"
 
       - name: Auto committing minified files
-        if: needs.check_change.steps.changed-files.outputs.any_changed == 'true'
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "Github Action: Auto Minified JS and CSS files"
