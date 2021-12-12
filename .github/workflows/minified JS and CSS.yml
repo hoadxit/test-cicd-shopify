@@ -1,6 +1,6 @@
 name: Auto minified JS and CSS
 on : 
-  push: ''
+  push: 
   pull_request:
     branches: [ main ]
 jobs:
