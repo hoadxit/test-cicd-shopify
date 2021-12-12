@@ -1,12 +1,16 @@
+<<<<<<< HEAD
 .aaaa2-1css-new {
+=======
+.ok-1css-new {
+>>>>>>> main
     position: absolute;
     overflow: hidden;
     clip: rect(0 0 0 0);
-    height: 1px;
+    height: 2px;
     width: 1px;
     margin: -1px;
-    padding: 0;
-    border: 0
+    padding: 0; 
+    border: 0;
 }
 
 .dhx_no-select {
@@ -15,7 +19,7 @@
     -ms-user-select: none;
     user-select: none;
     cursor: -webkit-grab;
-    cursor: grab
+    cursor: pointer
 }
 
 .dhx_no-select:not(.dhx_no-select--resize):not(.dhx_no-select--pointer) * {
