@@ -1,5 +1,7 @@
 name: Auto minified JS and CSS
-on :  push
+on :  
+ pull_request:
+        branches: [ main ]
 jobs:
   check_change:
     runs-on: ubuntu-latest
@@ -11,12 +13,6 @@ jobs:
       - name: Get changed files
         id: changed-files
         uses: jitterbit/get-changed-files@v1
-        
-#         uses: tj-actions/changed-files@v11.9
-#         with:
-#           files: 
-#              theme.js
-#              theme.css
         
   minified:
       runs-on: ubuntu-latest
