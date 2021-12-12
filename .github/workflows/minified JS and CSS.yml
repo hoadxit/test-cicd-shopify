@@ -10,7 +10,7 @@ jobs:
         uses: tj-actions/verify-changed-files@v8.8
         id: verify-changed-files
         with:
-          files: |
+          files: 
              theme.js
              theme.css
  
