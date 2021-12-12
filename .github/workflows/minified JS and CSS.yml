@@ -12,9 +12,7 @@ jobs:
         with:
           fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
       - run:
-          for file in ${{ github.event }}; do
-            echo "$file was modified"
-          done
+          ${{ github.event[0].commit }}
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v11.9
