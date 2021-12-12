@@ -16,7 +16,7 @@ jobs:
              theme.js
              theme.css
       - name: Condition Minify
-        if: needs.check_change.steps.changed-files.outputs.any_changed == 'true'
+        if: needs.check_change.steps.changed-files.outputs.any_changed == 'false'
         run: foo
   minify:
     runs-on: ubuntu-latest
