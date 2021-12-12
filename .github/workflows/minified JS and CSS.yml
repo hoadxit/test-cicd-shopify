@@ -1,6 +1,5 @@
 name: Auto minified JS and CSS
-on : 
-  push:
+on :  push
 jobs:
   check_change:
     runs-on: ubuntu-latest
