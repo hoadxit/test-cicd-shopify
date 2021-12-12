@@ -15,10 +15,6 @@ jobs:
           files: 
              theme.js
              theme.css
-             
-      - name: Condition Minify
-        if: steps.changed-files.outputs.any_changed == 'false'
-        run: foo
       
       - name: Auto Minify JS
         if: contains(steps.changed-files.outputs.all_modified_files, 'theme.js')
