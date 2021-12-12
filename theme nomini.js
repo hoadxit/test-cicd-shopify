@@ -3,5 +3,5 @@ function testAutoMinifi(arg) {
     var newNum = 2;
     //test command
     // var num2 = 2;
-    // var num3 = 3;csd
+    // var num3 = 3;csds
 }
