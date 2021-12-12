@@ -1,22 +1,27 @@
 name: Auto minified JS and CSS
-on :  
- pull_request:
-        branches: [ main ]
+on : push
 jobs:
   check_change:
     runs-on: ubuntu-latest
     outputs: 
-      list_files: ${{steps.changed-files.outputs.all}}
+      is_changed: ${{steps.changed-files.outputs.any_changed}}
+      list_files: ${{steps.changed-files.outputs.all_modified_files}}
     steps:
       - uses: actions/checkout@v2 
-      
+        with:
+          fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
+
       - name: Get changed files
         id: changed-files
-        uses: jitterbit/get-changed-files@v1
-        
+        uses: tj-actions/changed-files@v11.9
+        with:
+          files: 
+             asss/theme.js
+             asss/theme.css
   minified:
       runs-on: ubuntu-latest
       needs: check_change
+      if: needs.check_change.outputs.is_changed == 'true'
       steps:
       - uses: actions/checkout@v2 
       
