@@ -3,6 +3,8 @@ on :
   workflow_run:
     workflows:
       - Echo
+    types: 
+      - completed
 jobs:
   build:
     runs-on: ubuntu-latest
