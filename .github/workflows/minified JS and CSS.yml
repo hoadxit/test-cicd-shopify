@@ -23,6 +23,8 @@ jobs:
       needs: check_change
       if: needs.check_change.outputs.is_changed == 'true'
       steps:
+      - uses: actions/checkout@v2 
+      
       - name: Auto Minify JS
         if: contains(needs.check_change.outputs.list_file, 'theme.js')
         uses: nizarmah/auto-minify@v2.1
