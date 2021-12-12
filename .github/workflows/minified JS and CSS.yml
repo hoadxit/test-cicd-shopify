@@ -1,7 +1,7 @@
 name: Auto minified JS and CSS
 on : push
 jobs:
-  check_change:
+  minified:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2 
@@ -15,28 +15,25 @@ jobs:
           files: 
              theme.js
              theme.css
+             
       - name: Condition Minify
         if: steps.changed-files.outputs.any_changed == 'false'
         run: foo
-  minify:
-    runs-on: ubuntu-latest
-    needs: check_change
-    steps:
-     
       
       - name: Auto Minify JS
-        if: contains(needs.check_change.steps.changed-files.outputs.all_modified_files, 'theme.js')
+        if: contains(steps.changed-files.outputs.all_modified_files, 'theme.js')
         uses: nizarmah/auto-minify@v2.1
         with: 
           directory: "theme.js"
           
       - name: Auto Minify Css
-        if: contains(needs.check_change.steps.changed-files.outputs.all_modified_files, 'theme.css')
+        if: contains(steps.changed-files.outputs.all_modified_files, 'theme.css')
         uses: nizarmah/auto-minify@v2.1
         with: 
           directory: "theme.css"
 
       - name: Auto committing minified files
+        if: steps.changed-files.outputs.any_changed == 'false'
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "Github Action: Auto Minified JS and CSS files"
