@@ -1,0 +1,15 @@
+name: Echo
+on : 
+  workflow_run:
+    workflows:
+      - Auto minified JS and CSS
+    types: 
+      - completed
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2 
+
+      - name: Echo name
+        run: echo The username is 1
