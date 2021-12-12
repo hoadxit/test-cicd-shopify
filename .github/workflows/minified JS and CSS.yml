@@ -2,6 +2,8 @@ name: Auto minified JS and CSS
 on : 
   pull_request: 
     branches: [main]
+  push: 
+    branches: [main]
 jobs:
   check_change:
     runs-on: ubuntu-latest
