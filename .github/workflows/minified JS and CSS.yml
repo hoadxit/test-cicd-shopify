@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs: 
       is_changed: ${{steps.changed-files.outputs.any_changed}}
-      list_file: ${{steps.changed-files.outputs.all_modified_files}}
+      list_files: ${{steps.changed-files.outputs.all_modified_files}}
     steps:
       - uses: actions/checkout@v2 
         with:
@@ -26,13 +26,13 @@ jobs:
       - uses: actions/checkout@v2 
       
       - name: Auto Minify JS
-        if: contains(needs.check_change.outputs.list_file, 'theme.js')
+        if: contains(needs.check_change.outputs.list_files, 'theme.js')
         uses: nizarmah/auto-minify@v2.1
         with: 
           directory: "theme.js"
           
       - name: Auto Minify Css
-        if: contains(needs.check_change.outputs.list_file, 'theme.css')
+        if: contains(needs.check_change.outputs.list_files, 'theme.css')
         uses: nizarmah/auto-minify@v2.1
         with: 
           directory: "theme.css"
