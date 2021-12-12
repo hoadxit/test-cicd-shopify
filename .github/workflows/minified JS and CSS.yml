@@ -13,6 +13,7 @@ jobs:
           files: 
              theme.js
              theme.css
+             theme.min.css
  
       - name: Auto Minify JS
         if: contains(steps.verify-changed-files.outputs.changed_files, 'theme.js')
