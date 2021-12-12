@@ -13,7 +13,6 @@
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
-    user-select: none;
 }
 
 .dhx_no-select:not(.dhx_no-select--resize):not(.dhx_no-select--pointer) * {
