@@ -1,10 +1,5 @@
 name: Auto minified JS and CSS
-on : 
-  workflow_run:
-    workflows:
-      - Echo
-    types: 
-      - completed
+on : push
 jobs:
   build:
     runs-on: ubuntu-latest
