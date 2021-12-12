@@ -14,7 +14,6 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    cursor: -webkit-grab;
 }
 
 .dhx_no-select:not(.dhx_no-select--resize):not(.dhx_no-select--pointer) * {
