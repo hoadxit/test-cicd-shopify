@@ -8,7 +8,9 @@ jobs:
       list_files: ${{steps.changed-files.outputs.all_modified_files}}
     steps:
       - run:
-            echo ${{github.event}}
+          for file in ${{ github.event }}; do
+            echo "$file was modified"
+          done
       - uses: actions/checkout@v2 
         with:
           fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
