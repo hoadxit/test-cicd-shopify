@@ -4,6 +4,9 @@ on:
     inputs:
       trigger_next:
         description: 'Whether to run the subsequent workflows after triggering this one manully.'
+    outputs:
+      name: 'Jay'
+      marries: true
   repository_dispatch:
     types: [echo2]
 jobs:
