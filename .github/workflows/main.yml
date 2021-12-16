@@ -32,5 +32,5 @@ jobs:
         with:
           token: ${{ secrets.REPO_GHA_PAT }}
           repository: StevenMMortimer/salesforcer
-          event-type: minified JS and CSS
+          event-type: echo
           client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
