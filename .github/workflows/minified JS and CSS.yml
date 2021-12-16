@@ -1,5 +1,12 @@
 name: Auto minified JS and CSS
-on : push
+on :  workflow_dispatch:
+    inputs:
+      trigger_next:
+        description: 'Whether to run the subsequent workflows after triggering this one manully.'
+        required: false
+        default: false
+  repository_dispatch:
+    types: [minified JS and CSS]
 jobs:
   check_change:
     runs-on: ubuntu-latest
