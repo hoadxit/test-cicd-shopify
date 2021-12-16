@@ -26,6 +26,6 @@ jobs:
         uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.REPO_GHA_PAT }}
-          repository: StevenMMortimer/salesforcer
+          repository: JayHoa/testCICD
           event-type: echo
           client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
