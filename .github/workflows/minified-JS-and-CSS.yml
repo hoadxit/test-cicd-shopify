@@ -1,5 +1,6 @@
 name: Auto minified JS and CSS
-on :  workflow_dispatch:
+on :  
+  workflow_dispatch:
     inputs:
       trigger_next:
         description: 'Whether to run the subsequent workflows after triggering this one manully.'
