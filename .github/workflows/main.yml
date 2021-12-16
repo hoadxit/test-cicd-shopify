@@ -30,7 +30,7 @@ jobs:
           event-type: echo
           client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
 
-       - name: Trigger next workflow2
+      - name: Trigger next workflow2
         if: ${{ (github.event_name != 'workflow_dispatch' && success()) || (github.event_name == 'workflow_dispatch' && github.event.inputs.trigger_next && success()) }}
         uses: peter-evans/repository-dispatch@v1
         with:
