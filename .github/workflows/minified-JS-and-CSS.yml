@@ -6,7 +6,7 @@ on :  workflow_dispatch:
         required: false
         default: false
   repository_dispatch:
-    types: [minified JS and CSS]
+    types: [minified-JS-and-CSS]
 jobs:
   check_change:
     runs-on: ubuntu-latest
