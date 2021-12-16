@@ -3,9 +3,7 @@
 name: First
 
 # Controls when the workflow will run
-on:
-  pull_request:
-    branches: [ main ]
+on: push
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
