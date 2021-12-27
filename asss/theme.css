@@ -12,6 +12,7 @@
 }
 
 .dhx_no-select:not(.dhx_no-select--resize):not(.dhx_no-select--pointer) * {
+    color: antiquewhite;
 }
 
 .dhx_no-select--pointer {
