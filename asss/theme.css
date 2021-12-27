@@ -12,7 +12,6 @@
 }
 
 .dhx_no-select:not(.dhx_no-select--resize):not(.dhx_no-select--pointer) * {
-    cursor: -webkit-grab!important;
 }
 
 .dhx_no-select--pointer {
