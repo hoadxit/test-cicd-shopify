@@ -5,21 +5,16 @@
     height: 2px;
     width: 1px;
     margin: -1px;
-    padding: 0; 
 }
 
 .dhx_no-select {
     -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
 }
 
 .dhx_no-select:not(.dhx_no-select--resize):not(.dhx_no-select--pointer) * {
-    cursor: -webkit-grab!important;
 }
 
 .dhx_no-select--pointer {
-    cursor: pointer
 }
 
 .dhx_no-select--pointer,
