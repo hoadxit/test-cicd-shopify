@@ -15,7 +15,7 @@ var ok = ok || {};
         constructor(config) {
             super(config);
             this.script = SCRIPT;
-            
+            this.s = arguments
             this.eventListener();
         }
 
