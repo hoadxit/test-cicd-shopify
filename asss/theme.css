@@ -8,7 +8,6 @@
 }
 
 .dhx_no-select {
-    -webkit-user-select: none;
 }
 
 .dhx_no-select:not(.dhx_no-select--resize):not(.dhx_no-select--pointer) * {
