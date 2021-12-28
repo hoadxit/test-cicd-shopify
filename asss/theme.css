@@ -3,8 +3,6 @@
     overflow: hidden;
     clip: rect(0 0 0 0);
     height: 2px;
-    margin: -1px;
-    marker-end: none;
 }
 
 .dhx_no-select {
