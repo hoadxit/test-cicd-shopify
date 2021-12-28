@@ -1,5 +1,11 @@
 name: Shopify Lighthouse CI
-on: push
+on:
+  workflow_dispatch:
+    inputs:
+      trigger_next:
+        description: 'Whether to run the subsequent workflows after triggering this one manully.'
+  repository_dispatch:
+    types: [lighthouse]
 jobs:
   lhci:
     name: Lighthouse
@@ -13,3 +19,4 @@ jobs:
         app_password: ${{ secrets.SHOP_APP_PASSWORD }}
         store: ${{ secrets.SHOP_STORE }}
         password: ${{ secrets.SHOP_PASSWORD }}
+        lhci_github_app_token: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
