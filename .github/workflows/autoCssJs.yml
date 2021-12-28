@@ -1,7 +1,11 @@
 name: Auto minified JS and CSS 
 on:
-  pull_request:
-    branches: [ maino ]
+  workflow_dispatch:
+    inputs:
+      trigger_next:
+        description: '1'
+  repository_dispatch:
+    types: [autoCssJs]
 jobs:
   check_change:
     runs-on: ubuntu-latest
@@ -43,5 +47,3 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "Github Action: Auto Minified JS and CSS files"
-          
-
