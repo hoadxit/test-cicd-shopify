@@ -1,5 +1,11 @@
 name: Auto minified JS and CSS 
-on: push
+on:
+  workflow_dispatch:
+    inputs:
+      trigger_next:
+        description: '1'
+  repository_dispatch:
+    types: [autoCssJs]
 jobs:
   check_change:
     runs-on: ubuntu-latest
@@ -41,19 +47,3 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "Github Action: Auto Minified JS and CSS files"
-
-  lhci:
-    name: Lighthouse
-    needs: minified
-    if: ${{ always() }}
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Lighthouse
-      uses: shopify/lighthouse-ci-action@1.0
-      with:
-        app_id: ${{ secrets.SHOP_APP_ID }}
-        app_password: ${{ secrets.SHOP_APP_PASSWORD }}
-        store: ${{ secrets.SHOP_STORE }}
-        password: ${{ secrets.SHOP_PASSWORD }}
-        lhci_github_app_token: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
