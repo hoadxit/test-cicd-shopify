@@ -50,12 +50,13 @@ jobs:
       if: ${{ always() }}
       steps:
       - uses: actions/checkout@v2 
-
-      - name: Trigger next lighthouse ci
-        id: lighthouse
-        uses: peter-evans/repository-dispatch@v1
+      
+      - name: Lighthouse
+        uses: shopify/lighthouse-ci-action@1.0
         with:
-          token: ${{ secrets.REPO_ACCESS_TOKEN }}
-          repository: hoadxit/light
-          event-type: lighthouse
+          app_id: ${{ secrets.SHOP_APP_ID }}
+          app_password: ${{ secrets.SHOP_APP_PASSWORD }}
+          store: ${{ secrets.SHOP_STORE }}
+          password: ${{ secrets.SHOP_PASSWORD }}
+          lhci_github_app_token: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
 
