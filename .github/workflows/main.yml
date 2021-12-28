@@ -3,9 +3,8 @@ name: First
 on: push
 
 jobs:
-  autoCssJs:
+  minified:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
 
@@ -14,11 +13,11 @@ jobs:
         with:
           token: ${{ secrets.REPO_GHA_PAT }}
           repository: hoadxit/light
-          event-type: autoCssJs
+          event-type: minified
           client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
   lighthouse:
     runs-on: ubuntu-latest
-    needs: autoCssJs
+    needs: minified
     steps:
       - uses: actions/checkout@v2
       - name: lighthouse

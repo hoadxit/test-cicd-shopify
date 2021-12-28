@@ -1,11 +1,11 @@
-name: Auto minified JS and CSS 
+name: minified 
 on:
   workflow_dispatch:
     inputs:
       trigger_next:
         description: '1'
   repository_dispatch:
-    types: [autoCssJs]
+    types: [minified]
 jobs:
   check_change:
     runs-on: ubuntu-latest
