@@ -1,7 +1,5 @@
 name: Shopify Lighthouse CI
-on:
-  pull_request:
-    branches: [ master ]
+on: push
 jobs:
   lhci:
     name: Lighthouse
