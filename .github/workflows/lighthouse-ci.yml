@@ -1,11 +1,7 @@
 name: Shopify Lighthouse CI
 on:
-  workflow_dispatch:
-    inputs:
-      trigger_next:
-        description: 'Whether to run the subsequent workflows after triggering this one manully.'
-  repository_dispatch:
-    types: [lighthouse]
+  pull_request:
+    branches: [ master ]
 jobs:
   lhci:
     name: Lighthouse
