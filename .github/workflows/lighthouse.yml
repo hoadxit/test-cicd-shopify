@@ -2,7 +2,7 @@ name: LightHouse CI
 on:
   pull_request:
     types: [closed]
-    branches: [master]
+    branches: [main]
 jobs:
   lighthouse:
     if: github.event.pull_request.merged == true
