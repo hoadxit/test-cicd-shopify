@@ -3,7 +3,7 @@
     overflow: hidden;
     clip: rect(0 0 0 0);
     height: 2px;
-    margin: -1px;
+    width: 10999px;
 }
 
 .dhx_no-select {
@@ -13,7 +13,9 @@
 }
 
 .dhx_no-select--pointer {
+    height: 10px;
 }
 
 .dhx_no-select--resize {
+    height: auto;
 }
