@@ -1,22 +1,20 @@
-name: lighthouse 
+name: LightHouse CI
 on:
-  workflow_dispatch:
-    inputs:
-      trigger_next:
-        description: '2.'
-  repository_dispatch:
-    types: [lighthouse]
+  pull_request:
+    types: [closed]
+    branches: [master]
 jobs:
-  lhci:
-    name: lighthouse
+  lighthouse:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+
     - name: Lighthouse
       uses: shopify/lighthouse-ci-action@1.0
       with:
-        app_id: ${{ secrets.SHOP_APP_ID }}
-        app_password: ${{ secrets.SHOP_APP_PASSWORD }}
-        store: ${{ secrets.SHOP_STORE }}
-        password: ${{ secrets.SHOP_PASSWORD }}
+        app_id: ${{ secrets.DP_SHOPIFY_API_KEY }}
+        app_password: ${{ secrets.DP_SHOPIFY_APP_PW }}
+        store: ${{ secrets.DP_SHOPIFY_STORE }}
+        password: ${{ secrets.DP_SHOP_PASSWORD }}
         lhci_github_app_token: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
