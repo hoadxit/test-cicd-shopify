@@ -1,7 +1,7 @@
 name: Auto minified JS and CSS
 on:
   pull_request:
-    types: [opened, edited]
+    types: [opened, synchronize]
 jobs:
   check_change:
     runs-on: ubuntu-latest
