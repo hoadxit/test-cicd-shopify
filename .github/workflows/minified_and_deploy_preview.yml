@@ -1,4 +1,4 @@
-name: Auto minified JS and CSS
+name: Auto minified JS, CSS and Deploy Preview
 on:
   pull_request:
     types: [opened, synchronize, closed]
@@ -46,11 +46,14 @@ jobs:
   deploy_preview:
     runs-on: ubuntu-latest
     name: 'Deploy Preview'
+    needs: minified
+    if: ${{ always() }} 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
       - name: Shopify Theme Deploy Previews
+        if: github.event.pull_request.closed == false
         uses: wyugen/shopify-theme-action@v1
         with:
           SHOPIFY_STORE: ${{secrets.DP_SHOPIFY_STORE}}
