@@ -23,7 +23,7 @@ jobs:
   minified:
       runs-on: ubuntu-latest
       needs: check_change
-      if: needs.check_change.outputs.is_changed == 'true'
+      if: needs.check_change.outputs.is_changed == 'true' 
       steps:
       - uses: actions/checkout@v2 
       
