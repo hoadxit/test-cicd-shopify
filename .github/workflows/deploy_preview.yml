@@ -2,7 +2,7 @@ name: 'Deploy Preview'
 on: 
   workflow_run:
     workflows:
-      - Auto minified JS and CSS
+      - Auto  minified JS and CSS
     types: 
       - completed
 jobs:
@@ -23,5 +23,4 @@ jobs:
           CI: 1
           SHOPIFY_SHOP: ${{secrets.DP_SHOPIFY_STORE}}
           SHOPIFY_PASSWORD: ${{secrets.DP_SHOPIFY_APP_PW}}
-          pull_number: ${{github.event.number}}
           
