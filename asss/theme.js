@@ -326,7 +326,6 @@ var ok = ok || {};
                 }
                 //========= End
 
-                what.loc = self.model.spaceLoc;
                 app.goto(what);
             });
         }
