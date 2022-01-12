@@ -1,5 +1,10 @@
 name: 'Deploy Preview'
-on: pull_request
+on: 
+  workflow_run:
+    workflows:
+      - Auto  minified JS and CSS
+    types: 
+      - completed
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -15,3 +20,7 @@ jobs:
           SHOPIFY_APP_PW: ${{secrets.DP_SHOPIFY_APP_PW}}
           SHOPIFY_API_KEY: ${{secrets.DP_SHOPIFY_API_KEY}}
           github-token: ${{secrets.GITHUB_TOKEN}}
+          CI: 1
+          SHOPIFY_SHOP: ${{secrets.DP_SHOPIFY_STORE}}
+          SHOPIFY_PASSWORD: ${{secrets.DP_SHOPIFY_APP_PW}}
+          

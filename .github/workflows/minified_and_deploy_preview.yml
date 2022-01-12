@@ -1,10 +1,11 @@
-name: Auto minified JS and CSS
+name: Auto minified JS, CSS and Deploy Preview
 on:
   pull_request:
-    types: [opened, synchronize]
+    types: [opened, synchronize, closed]
 jobs:
   check_change:
     runs-on: ubuntu-latest
+    if: github.event.action != 'closed'
     outputs: 
       is_changed: ${{steps.changed-files.outputs.any_changed}}
       list_files: ${{steps.changed-files.outputs.all_modified_files}}
@@ -23,7 +24,7 @@ jobs:
   minified:
       runs-on: ubuntu-latest
       needs: check_change
-      if: needs.check_change.outputs.is_changed == 'true'
+      if: github.event.action != 'closed' || needs.check_change.outputs.is_changed == 'true' 
       steps:
       - uses: actions/checkout@v2 
       
@@ -43,3 +44,23 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "Github Action: Auto Minified JS and CSS files"
+  deploy_preview:
+    runs-on: ubuntu-latest
+    name: 'Deploy Preview'
+    needs: minified
+    if: ${{ always() }} 
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Shopify Theme Deploy Previews
+        if: github.event.action != 'closed'
+        uses: wyugen/shopify-theme-action@v1
+        with:
+          SHOPIFY_STORE: ${{secrets.DP_SHOPIFY_STORE}}
+          SHOPIFY_APP_PW: ${{secrets.DP_SHOPIFY_APP_PW}}
+          SHOPIFY_API_KEY: ${{secrets.DP_SHOPIFY_API_KEY}}
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          CI: 1
+          SHOPIFY_SHOP: ${{secrets.DP_SHOPIFY_STORE}}
+          SHOPIFY_PASSWORD: ${{secrets.DP_SHOPIFY_APP_PW}}
