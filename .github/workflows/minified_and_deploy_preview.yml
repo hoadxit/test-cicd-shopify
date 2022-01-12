@@ -5,6 +5,7 @@ on:
 jobs:
   check_change:
     runs-on: ubuntu-latest
+    if: github.event.action != 'closed'
     outputs: 
       is_changed: ${{steps.changed-files.outputs.any_changed}}
       list_files: ${{steps.changed-files.outputs.all_modified_files}}
@@ -23,7 +24,7 @@ jobs:
   minified:
       runs-on: ubuntu-latest
       needs: check_change
-      if: needs.check_change.outputs.is_changed == 'true' 
+      if: github.event.action != 'closed' || needs.check_change.outputs.is_changed == 'true' 
       steps:
       - uses: actions/checkout@v2 
       
@@ -53,7 +54,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Shopify Theme Deploy Previews
-        if: github.event.pull_request.closed == false
+        if: github.event.action != 'closed'
         uses: wyugen/shopify-theme-action@v1
         with:
           SHOPIFY_STORE: ${{secrets.DP_SHOPIFY_STORE}}
