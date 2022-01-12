@@ -24,7 +24,7 @@ jobs:
   minified:
       runs-on: ubuntu-latest
       needs: check_change
-      if: github.event.action != 'closed' || needs.check_change.outputs.is_changed == 'true' 
+      if: github.event.action != 'closed' AND needs.check_change.outputs.is_changed == 'true' 
       steps:
       - uses: actions/checkout@v2 
       
