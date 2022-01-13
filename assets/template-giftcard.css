@@ -414,3 +414,6 @@ h2,
   background: var(--gradient-base-background-1);
   background-attachment: fixed;
 }
+.test_can_delete{
+  display: block;
+}
