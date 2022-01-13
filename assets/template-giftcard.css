@@ -416,4 +416,5 @@ h2,
 }
 .test_can_delete{
   display: block;
+  color: none;
 }
