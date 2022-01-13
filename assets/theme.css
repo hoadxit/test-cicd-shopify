@@ -2,6 +2,10 @@
     position: absolute;
     overflow: hidden;
     clip: rect(0 0 0 0);
+<<<<<<< HEAD
+    height: 2px;
+=======
+>>>>>>> main
 }
 
 .dhx_no-select {
