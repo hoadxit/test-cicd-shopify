@@ -16,7 +16,7 @@ jobs:
           sudo gem install shopify-cli #Install shopify-cli
       - name: Set env
         run:
-          export CI = 1
+          export CI = "1"
       - name: Set env1
         run:
           export SHOPIFY_SHOP = ${{secrets.DP_SHOPIFY_STORE}}
