@@ -52,10 +52,10 @@ jobs:
 
       # - name: Install Ruby
         # if: github.event.action != 'closed'
-      - run: sudo apt install ruby-full  #Install Ruby
+      # - run: sudo apt install ruby-full  #Install Ruby
       - run: sudo gem install shopify-cli #Install shopify-cli
       - run: shopify login #shopify login
-      
+
 
       
         # with:
