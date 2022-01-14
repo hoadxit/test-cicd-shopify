@@ -16,7 +16,7 @@ jobs:
           sudo gem install shopify-cli #Install shopify-cli
       - name: Set env
         run: 
-          CI = 1
+          CI=1
           SHOPIFY_SHOP = ${{secrets.DP_SHOPIFY_STORE}}
           SHOPIFY_PASSWORD = ${{secrets.DP_SHOPIFY_APP_PW}
           shopify theme push --unpublished
