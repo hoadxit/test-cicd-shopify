@@ -49,16 +49,16 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-
-      # - name: Install Ruby
-        # if: github.event.action != 'closed'
-      # - run: sudo apt install ruby-full  #Install Ruby
-      - run: sudo gem install shopify-cli #Install shopify-cli
-      - run: shopify login #shopify login
+        
+      - name: Setup
+        with:
+          CI: 1
+          SHOPIFY_SHOP: ${{secrets.DP_SHOPIFY_STORE}}
+          SHOPIFY_PASSWORD: ${{secrets.DP_SHOPIFY_APP_PW}}
+        run: |
+          sudo gem install shopify-cli #Install shopify-cli
+          shopify theme push --unpublished
 
 
       
-        # with:
-        #   CI: 1
-        #   SHOPIFY_SHOP: ${{secrets.DP_SHOPIFY_STORE}}
-        #   SHOPIFY_PASSWORD: ${{secrets.DP_SHOPIFY_APP_PW}}
+        
