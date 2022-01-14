@@ -22,10 +22,10 @@ jobs:
           export SHOPIFY_SHOP = ${{secrets.DP_SHOPIFY_STORE}}
       - name: Set env2
         run:
-          export SHOPIFY_PASSWORD = ${{secrets.DP_SHOPIFY_APP_PW}
-#       - name: Set env3
-#         run:
-#           shopify theme push --unpublished
+          export SHOPIFY_PASSWORD = ${{secrets.DP_SHOPIFY_APP_PW}}
+      - name: Set env3
+        run:
+          shopify theme push --unpublished
         
 #           export SHOPIFY_SHOP = ${{secrets.DP_SHOPIFY_STORE}}
 #           export SHOPIFY_PASSWORD = ${{secrets.DP_SHOPIFY_APP_PW}
