@@ -52,10 +52,10 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Shopify Theme Deploy Previews
+      - name: Install Ruby
         # if: github.event.action != 'closed'
         run: sudo apt install ruby-full
-             sudo gem install shopify-cli
+      - run: sudo gem install shopify-cli
         # run: 
 
         # with:
