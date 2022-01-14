@@ -54,12 +54,10 @@ jobs:
 
       - name: Shopify Theme Deploy Previews
         if: github.event.action != 'closed'
-        uses: wyugen/shopify-theme-action@v1
-        with:
-          SHOPIFY_STORE: ${{secrets.DP_SHOPIFY_STORE}}
-          SHOPIFY_APP_PW: ${{secrets.DP_SHOPIFY_APP_PW}}
-          SHOPIFY_API_KEY: ${{secrets.DP_SHOPIFY_API_KEY}}
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          CI: 1
-          SHOPIFY_SHOP: ${{secrets.DP_SHOPIFY_STORE}}
-          SHOPIFY_PASSWORD: ${{secrets.DP_SHOPIFY_APP_PW}}
+        - run: sudo apt install ruby-full
+        - run: sudo gem install shopify-cli
+
+        # with:
+        #   CI: 1
+        #   SHOPIFY_SHOP: ${{secrets.DP_SHOPIFY_STORE}}
+        #   SHOPIFY_PASSWORD: ${{secrets.DP_SHOPIFY_APP_PW}}
