@@ -55,7 +55,8 @@ jobs:
       - name: Shopify Theme Deploy Previews
         # if: github.event.action != 'closed'
         run: sudo apt install ruby-full
-        # run: sudo gem install shopify-cli
+             sudo gem install shopify-cli
+        # run: 
 
         # with:
         #   CI: 1
