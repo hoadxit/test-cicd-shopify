@@ -28,7 +28,7 @@ jobs:
         id: step_one
         run: |
           echo 'versionS<<EOF' >> $GITHUB_ENV
-          shopify version
+          shopify version >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
 
       - name: Test2
