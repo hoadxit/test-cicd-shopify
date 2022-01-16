@@ -41,6 +41,11 @@ jobs:
       - name: Test22
         run: 
           echo ${{env.themeCreate}}
+          
+      - name: fetch the json value
+        run: |
+           githubjson=`cat ${{env.themeCreate}}`
+           echo $githubjson
       - name: logout
         run: shopify logout
           
