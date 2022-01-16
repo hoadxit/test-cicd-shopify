@@ -32,7 +32,7 @@ jobs:
 #           echo 'EOF' >> $GITHUB_ENV
 
       - name: Test2
-        run:
+        run: |
           shopify login [--store jayhoadev01.myshopify.com]
           shopify theme push --development
           
