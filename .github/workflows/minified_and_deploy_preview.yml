@@ -33,7 +33,7 @@ jobs:
 
       - name: Test2
         run: |
-          shopify login [--store jayhoadev01.myshopify.com]
+          shopify login [--store ${{env.SHOPIFY_SHOP}}]
           shopify theme push --development
       - name: logout
         run: shopify logout
