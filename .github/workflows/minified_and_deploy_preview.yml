@@ -40,6 +40,7 @@ jobs:
           
       - name: Test22
         run: 
+          echo ${{env.themeCreate.theme}}
           echo ${{env.themeCreate.theme.id}}
           
 #       - name: fetch the json value
