@@ -24,8 +24,8 @@ jobs:
         run:
           echo ${{env.SHOPIFY_SHOP}}
           
-      - name: Set the value
-        id: step_one
+#       - name: Set the value
+#         id: step_one
 #         run: |
 #           echo 'versionS<<EOF' >> $GITHUB_ENV
 #           shopify version >> $GITHUB_ENV
