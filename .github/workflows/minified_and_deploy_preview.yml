@@ -34,6 +34,13 @@ jobs:
           shopify login [--store ${{env.SHOPIFY_SHOP}}]
           shopify theme push --development 
           
+          echo 'themeCreate<<EOF' >> $GITHUB_ENV
+          shopify theme push --development --json  >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+          
+      - name: Test22
+        run: 
+          echo ${{env.themeCreate}}
       - name: logout
         run: shopify logout
           
