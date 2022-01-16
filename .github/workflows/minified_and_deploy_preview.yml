@@ -20,21 +20,25 @@ jobs:
           echo "SHOPIFY_SHOP=${{secrets.DP_SHOPIFY_STORE}}" >> $GITHUB_ENV
           echo "SHOPIFY_PASSWORD=${{secrets.DP_SHOPIFY_APP_PW}}" >> $GITHUB_ENV
           
-      - name: Test
-        run:
-          echo ${{env.SHOPIFY_SHOP}}
+
           
-      - name: Set the value
-        id: step_one
-        run: |
-          echo 'versionS<<EOF' >> $GITHUB_ENV
-          shopify version >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV
+#       - name: Set the value
+#         id: step_one
+#         run: |
+#           echo 'versionS<<EOF' >> $GITHUB_ENV
+#           shopify version >> $GITHUB_ENV
+#           echo 'EOF' >> $GITHUB_ENV
 
       - name: Test2
         run: |
           shopify login [--store ${{env.SHOPIFY_SHOP}}]
-          shopify theme push --development --json
+          echo 'themeCreate<<EOF' >> $GITHUB_ENV
+          shopify theme push --development --json  >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+          
+      - name: Test
+        run:
+          echo ${{env.themeCreate}}
       - name: logout
         run: shopify logout
           
