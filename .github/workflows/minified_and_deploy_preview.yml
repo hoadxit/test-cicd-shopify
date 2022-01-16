@@ -34,7 +34,7 @@ jobs:
       - name: Test2
         run: |
           shopify login [--store ${{env.SHOPIFY_SHOP}}]
-          shopify theme push --development 363626
+          shopify theme push --development --json
       - name: logout
         run: shopify logout
           
