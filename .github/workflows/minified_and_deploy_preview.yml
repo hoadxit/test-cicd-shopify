@@ -24,6 +24,17 @@ jobs:
         run:
           echo ${{env.SHOPIFY_SHOP}}
           
+      - name: Set the value
+        id: step_one
+        run: |
+          echo 'versionS<<EOF' >> $GITHUB_ENV
+          shopify version
+          echo 'EOF' >> $GITHUB_ENV
+
+      - name: Test2
+        run:
+          echo ${{env.versionS}}
+          
       # - run:
       #     shopify theme push --unpublished
 
