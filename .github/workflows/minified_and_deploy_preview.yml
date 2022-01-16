@@ -33,6 +33,7 @@ jobs:
 
       - name: Test2
         run:
+          shopify login [--store jayhoadev01.myshopify.com]
           shopify theme push --development
           
 
