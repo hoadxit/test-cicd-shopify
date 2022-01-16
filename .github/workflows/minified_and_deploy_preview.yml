@@ -15,12 +15,13 @@ jobs:
         run: 
           sudo gem install shopify-cli #Install shopify-cli
       - name: Set env
-#         env:
-#           CI: 1
-#           SHOPIFY_SHOP: ${{secrets.DP_SHOPIFY_STORE}}
-#           SHOPIFY_PASSWORD: ${{secrets.DP_SHOPIFY_APP_PW}}
-        run:
-          shopify theme push --unpublished
+        run: |
+          echo "CI=1 >> $GITHUB_ENV"
+          echo "SHOPIFY_SHOP=${{secrets.DP_SHOPIFY_STORE}} >> $GITHUB_ENV"
+          echo "SHOPIFY_PASSWORD=${{secrets.DP_SHOPIFY_APP_PW}} >> $GITHUB_ENV"
+
+      # - run:
+      #     shopify theme push --unpublished
 
        
         
