@@ -25,14 +25,13 @@ jobs:
         run: shopify login [--store ${{env.SHOPIFY_SHOP}}]
         
       - name: Create and update preview  
-        if: github.event.action != 'closed'
+        if: github.event.action == 'closed'
         run: |
           echo 'themeCreate<<EOF' >> $GITHUB_ENV
           shopify theme push --unpublished --theme ${{github.event.pull_request.number}} --json  >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
         
       - name: Delete preview
-        if: github.event.action == 'closed'
         run: shopify theme delete {${{github.event.pull_request.number}}} -f -d
                     
       - name: Comment PR
