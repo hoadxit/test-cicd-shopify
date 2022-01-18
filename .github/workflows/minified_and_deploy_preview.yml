@@ -28,13 +28,13 @@ jobs:
       - name: Create and update preview  
         if: github.event.action != 'closed'
         run: |
-          echo 'resTheme<<EOF' >> $GITHUB_ENV
+          echo 'PR_THERME_ID<<EOF' >> $GITHUB_ENV
           shopify theme push --unpublished --theme ${{github.event.pull_request.number}} --json  >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
 
       - name: Get PR ID
         run: |
-          RES=env.resTheme
+          RES=env.PR_THERME_ID
           A=$(awk -F'preview_theme_id=' '{print $2}' <<< "$RES")
           B=$(awk -F'}' '{print $1}' <<< "$A")
           echo "PR_THERME_ID=$B" >> $GITHUB_ENV
