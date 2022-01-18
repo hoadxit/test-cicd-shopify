@@ -7,7 +7,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Set Env
-      run: echo 'CI= "{'theme':{'id':128578224297,'name':'14','role':'unpublished','shop':'***','editor_url':'https://***/admin/themes/128578224297/editor','preview_url':'https://***/?preview_theme_id=128578224297'" >> $GITHUB_ENV
+      run: echo "CI= {'theme':{'id':128578224297,'name':'14','role':'unpublished','shop':'***','editor_url':'https://***/admin/themes/128578224297/editor','preview_url':'https://***/?preview_theme_id=128578224297'" >> $GITHUB_ENV
         
     - name: Test commands
       run: |
