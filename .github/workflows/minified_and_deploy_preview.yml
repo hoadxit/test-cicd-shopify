@@ -4,42 +4,43 @@ on:
     types: [opened, synchronize, closed]
 jobs:
 
-  deploy_preview:
+ deploy_preview:
     runs-on: ubuntu-latest
     name: 'Deploy Preview'
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-        
-      - name: Setup
+
+      - name: Install shopify-cli
         run: 
-          sudo gem install shopify-cli #Install shopify-cli
-      - name: Set env
+          sudo gem install shopify-cli 
+      - name: Set Env
         run: |
           echo "CI=1" >> $GITHUB_ENV
           echo "SHOPIFY_SHOP=${{secrets.DP_SHOPIFY_STORE}}" >> $GITHUB_ENV
           echo "SHOPIFY_PASSWORD=${{secrets.DP_SHOPIFY_APP_PW}}" >> $GITHUB_ENV
           
+      - name: Logged into store as staff 
+        run: shopify login [--store ${{env.SHOPIFY_SHOP}}]
+        
+      - name: Create and update preview  
+        if: github.event.action != 'closed'
+        run: shopify theme push --unpublished --theme ${{github.event.pull_request.id}}
+        
       - name: Test
-        run:
-          echo ${{env.SHOPIFY_SHOP}}
-          
-      - name: Set the value
-        id: step_one
-        run: |
-          echo 'versionS<<EOF' >> $GITHUB_ENV
-          shopify version >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV
-
-      - name: Test2
-        run:
-          echo ${{env.versionS}}
-
-      - run:
-          shopify theme push --unpublished
-
-       
+        run: echo ${{github.event.pull_request.id}}
         
+      - name: Delete preview
+        if: github.event.action == 'closed'
 
-      
-        
+        run: shopify theme delete {${{github.event.pull_request.id}}} -f
+                    
+      - name: Comment PR
+        uses: mshick/add-pr-comment@v1
+        with:
+          message: |
+            Deployed successfully to ${{github.event.pull_request.number}}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token-user-login: 'github-actions[bot]' # The user.login for temporary GitHub tokens
+          allow-repeats: false # This is the default
