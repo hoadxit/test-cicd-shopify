@@ -35,7 +35,7 @@ jobs:
       - name: get id
         run: |
           A=$(awk -F'preview_theme_id=' '{print $2}' <<< "${{env.resTheme}}")
-          B=$(awk -F'}}' '{print $1}' <<< "$A")
+          B=$(awk -F'}' '{print $1}' <<< "$A")
           echo "preview_theme_id=$A" >> $GITHUB_ENV
 
       - name: Delete preview 1
