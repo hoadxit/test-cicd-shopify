@@ -23,7 +23,7 @@ jobs:
       - name: Run comman
         run: |
           shopify login [--store ${{env.SHOPIFY_SHOP}}]
-          shopify theme push --unpublished --theme ${{github.event.pull_request.number}}
+          shopify theme push --unpublished --theme #${{github.event.pull_request.number}}
                     
       - name: Test 
         run: 
