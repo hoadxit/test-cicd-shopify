@@ -23,6 +23,8 @@ jobs:
           
       - name: Logged into store as staff 
         run: shopify login [--store ${{env.SHOPIFY_SHOP}}]
+      - name: Pull theme
+        run: shopify theme pull -t ${{github.event.pull_request.number}} 
         
       - name: Create and update preview  
         if: github.event.action != 'closed'
