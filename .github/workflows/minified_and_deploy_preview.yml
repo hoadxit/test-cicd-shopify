@@ -20,18 +20,21 @@ jobs:
           echo "CI=1" >> $GITHUB_ENV
           echo "SHOPIFY_SHOP=${{secrets.DP_SHOPIFY_STORE}}" >> $GITHUB_ENV
           echo "SHOPIFY_PASSWORD=${{secrets.DP_SHOPIFY_APP_PW}}" >> $GITHUB_ENV
-      - name: Run commands
-        run: |
-          shopify login [--store ${{env.SHOPIFY_SHOP}}]
-          shopify theme push --unpublished --theme ${{github.event.pull_request.number}} --json
+          
+      - name: Logged into store as staff 
+        run: shopify login [--store ${{env.SHOPIFY_SHOP}}]
+        
+      - name: Create and update preview  
+        run: shopify theme push --unpublished --theme ${{github.event.pull_request.number}
+        
+      - name: Delete preview
+        run: shopify theme delete {${{github.event.pull_request.number} } -f
                     
       - name: Comment PR
         uses: mshick/add-pr-comment@v1
         with:
           message: |
-            **Hello**
-            🌏
-            !
+            Deployed successfully to 
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           repo-token-user-login: 'github-actions[bot]' # The user.login for temporary GitHub tokens
           allow-repeats: false # This is the default
