@@ -34,7 +34,7 @@ jobs:
       - name: Test2
         run:
           echo ${{env.versionS}}
-          
+
       # - run:
       #     shopify theme push --unpublished
 
