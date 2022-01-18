@@ -32,7 +32,7 @@ jobs:
           echo 'EOF' >> $GITHUB_ENV
         
       - name: Delete preview 1
-        run: shopify theme delete {${{github.event.pull_request.number}}} -f -d
+        run: shopify theme delete {${{github.event.pull_request.number}}} -f 
                     
       - name: Comment PR
         uses: mshick/add-pr-comment@v1
