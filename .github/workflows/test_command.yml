@@ -12,8 +12,8 @@ jobs:
       run: |
         A=$(awk -F'preview_theme_id=' '{print $2}' <<< "${{env.res}}")
 
-        echo "ActionNew=A" >> $GITHUB_ENV
+        echo "ActionNew=$A" >> $GITHUB_ENV
     - name: Test value
-      run : echo ${{ActionNew}}
+      run : echo ${{env.ActionNew}}
 
 
