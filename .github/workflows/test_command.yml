@@ -11,7 +11,8 @@ jobs:
         
     - name: Test commands
       run: |
-        A="$(cut -d'preview_theme_id=' -f2 <<<"${{env.res}}")"
+        A=$(awk -F'preview_theme_id=' '{print $2}' <<< "${{env.res}}")
+
         echo "$A"
 
 
