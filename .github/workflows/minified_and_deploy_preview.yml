@@ -28,7 +28,8 @@ jobs:
       - name: Create and update preview  
         if: github.event.action != 'closed'
         run: |
-          shopify theme push --unpublished --theme ${{github.event.pull_request.number}} --json
+          shopify theme push --development
+          
           
       - name: Delete preview 
         if: github.event.action == 'closed'
