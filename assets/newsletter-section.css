@@ -19,7 +19,6 @@
   .newsletter__wrapper:not(.color-background-1) {
     padding-top: calc(5rem + var(--page-width-margin));
     padding-bottom: calc(5rem + var(--page-width-margin));
-    opacity: 1
   }
 }
 
