@@ -11,8 +11,7 @@ jobs:
         
     - name: Test commands
       run: |
-        res= ${{env.res}}
-        A="$(cut -d'preview_theme_id=' -f2 <<<"$res")"
+        A="$(cut -d'preview_theme_id=' -f2 <<<"${{env.res}}")"
         echo "$A"
 
 
