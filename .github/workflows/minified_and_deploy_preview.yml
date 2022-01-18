@@ -28,17 +28,16 @@ jobs:
       - name: Create and update preview  
         if: github.event.action != 'closed'
         run: |
-          echo 'resThemeCreate<<EOF' >> $GITHUB_ENV
+          echo 'resTheme<<EOF' >> $GITHUB_ENV
           shopify theme push --unpublished --theme ${{github.event.pull_request.number}} --json  >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
+
       - name: get id
         run: |
-          A=$(awk -F'preview_theme_id=' '{print $2}' <<< "${{env.resThemeCreate}}")
+          A=$(awk -F'preview_theme_id=' '{print $2}' <<< "${{env.resTheme}}")
 
           echo "$A"
 
-
-        
       - name: Delete preview 1
         if: github.event.action == 'closed'
         run: shopify theme delete {${{github.event.pull_request.number}}} -f -d
