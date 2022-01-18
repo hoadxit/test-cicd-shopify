@@ -29,7 +29,8 @@ jobs:
         run: shopify theme push --unpublished --theme ${{github.event.pull_request.number}}
         
       - name: Delete preview
-        run: shopify theme delete {${{github.event.pull_request.number} } -f
+        if: github.event.action == 'closed'
+        run: shopify theme delete {${{github.event.pull_request.number}} } -f
                     
       - name: Comment PR
         uses: mshick/add-pr-comment@v1
