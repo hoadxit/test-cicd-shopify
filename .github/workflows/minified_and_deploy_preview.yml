@@ -21,11 +21,11 @@ jobs:
           echo "SHOPIFY_SHOP=${{secrets.DP_SHOPIFY_STORE}}" >> $GITHUB_ENV
           echo "SHOPIFY_PASSWORD=${{secrets.DP_SHOPIFY_APP_PW}}" >> $GITHUB_ENV
           
-      - name: Pull
-        run: shopify theme pull -t ${{github.event.pull_request.number}} 
+     
       - name: Logged into store as staff 
         run: shopify login [--store ${{env.SHOPIFY_SHOP}}]
-        
+      - name: Pull
+        run: shopify theme pull -t ${{github.event.pull_request.number}} 
       - name: Create and update preview  
         if: github.event.action != 'closed'
         run: |
