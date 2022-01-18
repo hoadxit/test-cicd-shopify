@@ -40,8 +40,10 @@ jobs:
           
       - name: Test22
         run: 
-          echo ${{env.themeCreate.theme}}
-          echo ${{env.themeCreate.theme.id}}
+          echo ${{github.event.pull_request.number}}
+          echo ${{github.event.number}}
+          echo ${{github.event.issue.number}}
+          
           
 #       - name: fetch the json value
 #         run: |
