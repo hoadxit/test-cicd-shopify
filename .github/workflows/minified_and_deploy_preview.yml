@@ -34,7 +34,8 @@ jobs:
 
       - name: Get PR ID
         run: |
-          A=$(awk -F'preview_theme_id=' '{print $2}' <<< "${{env.resTheme}}")
+          RES=env.resTheme
+          A=$(awk -F'preview_theme_id=' '{print $2}' <<< "$RES")
           B=$(awk -F'}' '{print $1}' <<< "$A")
           echo "PR_THERME_ID=$B" >> $GITHUB_ENV
 
