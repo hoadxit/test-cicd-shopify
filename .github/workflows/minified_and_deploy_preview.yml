@@ -32,7 +32,6 @@ jobs:
         run: echo ${{github.event.pull_request.id}}
         
       - name: Delete preview
-        if: github.event.action == 'closed'
         run: shopify theme delete {${{github.event.pull_request.number}} } -f
                     
       - name: Comment PR
