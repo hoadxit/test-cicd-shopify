@@ -29,7 +29,7 @@ jobs:
         if: github.event.action != 'closed'
         run: |
           echo 'resTheme<<EOF' >> $GITHUB_ENV
-          shopify theme push --unpublished --theme ${{github.event.pull_request.number}} --json  >> $GITHUB_ENV
+          shopify theme push --unpublished --theme ${{github.event.pull_request.number}}  >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
 
       - name: get id
