@@ -24,14 +24,15 @@ jobs:
      
       - name: Logged into store as staff 
         run: shopify login [--store ${{env.SHOPIFY_SHOP}}]
-      - name: Pull
-        run: shopify theme pull -t ${{github.event.pull_request.number}} 
+
       - name: Create and update preview  
         if: github.event.action != 'closed'
         run: |
           echo 'themeCreate<<EOF' >> $GITHUB_ENV
           shopify theme push --unpublished --theme ${{github.event.pull_request.number}} --json  >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
+          echo "idTheme = ${cut -d'"id":' -f2 <<<${{env.themeCreate}}} " >> $GITHUB_ENV
+
         
       - name: Delete preview 1
         if: github.event.action == 'closed'
