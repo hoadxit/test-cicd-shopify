@@ -28,17 +28,18 @@ jobs:
         if: github.event.action != 'closed'
         run: |
           echo 'themeCreate<<EOF' >> $GITHUB_ENV
-          shopify theme push --unpublished --theme ${{github.event.pull_request.id}} --json  >> $GITHUB_ENV
+          shopify theme push --unpublished --theme ${{github.event.pull_request.number}} --json  >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
         
       - name: Delete preview
-        run: shopify theme delete {${{github.event.pull_request.id}}} -f -d
+        if: github.event.action == 'closed'
+        run: shopify theme delete {${{github.event.pull_request.number}}} -f -d
                     
       - name: Comment PR
         uses: mshick/add-pr-comment@v1
         with:
           message: |
-            Deployed successfully to ${{github.event.pull_request.id}}
+            Deployed successfully to ${{github.event.pull_request.number}}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           repo-token-user-login: 'github-actions[bot]' # The user.login for temporary GitHub tokens
           allow-repeats: false # This is the default
