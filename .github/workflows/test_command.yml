@@ -1,4 +1,4 @@
-name: LightHouse CI
+name: Test commands
 on: pull_request
 jobs:
   test:
@@ -7,14 +7,12 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Set Env
-      run: echo "CI= {'theme':{'id':128578224297,'name':'14','role':'unpublished','shop':'***','editor_url':'https://***/admin/themes/128578224297/editor','preview_url':'https://***/?preview_theme_id=128578224297'" >> $GITHUB_ENV
+      run: echo "res= {'theme':{'id':128578224297,'name':'14','role':'unpublished','shop':'***','editor_url':'https://***/admin/themes/128578224297/editor','preview_url':'https://***/?preview_theme_id=128578224297'" >> $GITHUB_ENV
         
     - name: Test commands
       run: |
-        s='one_two_three_four_five'
-        A="$(cut -d'_' -f2 <<<"$s")"
+        res= ${{env.res}}
+        A="$(cut -d'preview_theme_id=' -f2 <<<"$res")"
         echo "$A"
 
-        B="$(cut -d'_' -f4 <<<"$s")"
-        echo "$B"
 
