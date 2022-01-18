@@ -3,63 +3,43 @@ on:
   pull_request:
     types: [opened, synchronize, closed]
 jobs:
-  check_change:
-    runs-on: ubuntu-latest
-    outputs: 
-      is_changed: ${{steps.changed-files.outputs.any_changed}}
-      list_files: ${{steps.changed-files.outputs.all_modified_files}}
-    steps:
-      - uses: actions/checkout@v2 
-        with:
-          fetch-depth: 2  # OR "2" -> To retrieve the preceding commit.
 
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@v11.9
-        with:
-          files: 
-             assets/theme.js
-             assets/theme.css
-  minified:
-      runs-on: ubuntu-latest
-      needs: check_change
-      if: github.event.action == 'opened' || needs.check_change.outputs.is_changed == 'true'
-      steps:
-      - uses: actions/checkout@v2 
-      
-      - name: Auto Minify JS
-        if: github.event.action == 'opened' || contains(needs.check_change.outputs.list_files, 'theme.js')
-        uses: nizarmah/auto-minify@v2.1
-        with: 
-          directory: "assets/theme.js"
-          
-      - name: Auto Minify Css
-        if: github.event.action == 'opened' || contains(needs.check_change.outputs.list_files, 'theme.css')
-        uses: nizarmah/auto-minify@v2.1
-        with: 
-          directory: "assets/theme.css"
-
-      - name: Auto committing minified files
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: "Github Action: Auto Minified JS and CSS files"
-  deploy_preview:
+ deploy_preview:
     runs-on: ubuntu-latest
     name: 'Deploy Preview'
-    needs: minified
-    if: ${{ always() }} 
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Shopify Theme Deploy Previews
+      - name: Install shopify-cli
+        run: 
+          sudo gem install shopify-cli 
+      - name: Set Env
+        run: |
+          echo "CI=1" >> $GITHUB_ENV
+          echo "SHOPIFY_SHOP=${{secrets.DP_SHOPIFY_STORE}}" >> $GITHUB_ENV
+          echo "SHOPIFY_PASSWORD=${{secrets.DP_SHOPIFY_APP_PW}}" >> $GITHUB_ENV
+          
+     
+      - name: Logged into store as staff 
+        run: shopify login [--store ${{env.SHOPIFY_SHOP}}]
+
+      - name: Create and update preview  
         if: github.event.action != 'closed'
-        uses: wyugen/shopify-theme-action@v1
+        run: |
+          shopify theme push --development
+          
+          
+      - name: Delete preview 
+        if: github.event.action == 'closed'
+        run: shopify theme delete {${{github.event.pull_request.number}}} -f -d
+                    
+      - name: Comment PR
+        uses: mshick/add-pr-comment@v1
         with:
-          SHOPIFY_STORE: ${{secrets.DP_SHOPIFY_STORE}}
-          SHOPIFY_APP_PW: ${{secrets.DP_SHOPIFY_APP_PW}}
-          SHOPIFY_API_KEY: ${{secrets.DP_SHOPIFY_API_KEY}}
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          CI: 1
-          SHOPIFY_SHOP: ${{secrets.DP_SHOPIFY_STORE}}
-          SHOPIFY_PASSWORD: ${{secrets.DP_SHOPIFY_APP_PW}}
+          message: |
+            Deployed successfully to ${{secrets.DP_SHOPIFY_STORE}}/?preview_theme_id=
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token-user-login: 'github-actions[bot]' # The user.login for temporary GitHub tokens
+          allow-repeats: false # This is the default
