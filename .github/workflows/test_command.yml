@@ -6,7 +6,7 @@ jobs:
     steps:
 
     - name: Set Env
-      run: echo "res= {"theme':{'id':128578224297,'name':'14','role':'unpublished','shop':'***','editor_url':'https://***/admin/themes/128578224297/editor',"preview_url':'https://***/?preview_theme_id=128578224297'" >> $GITHUB_ENV
+      run: echo "res= {theme':{'id':1285782preview_theme_id=128578224297'" >> $GITHUB_ENV
         
     - name: Test commands
       run: |
