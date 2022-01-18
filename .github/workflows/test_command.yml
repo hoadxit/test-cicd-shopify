@@ -1,0 +1,20 @@
+name: LightHouse CI
+on: pull_request
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set Env
+      run: echo 'CI= "{'theme':{'id':128578224297,'name':'14','role':'unpublished','shop':'***','editor_url':'https://***/admin/themes/128578224297/editor','preview_url':'https://***/?preview_theme_id=128578224297'" >> $GITHUB_ENV
+        
+    - name: Test commands
+      run: |
+        s='one_two_three_four_five'
+        A="$(cut -d'_' -f2 <<<"$s")"
+        echo "$A"
+
+        B="$(cut -d'_' -f4 <<<"$s")"
+        echo "$B"
+

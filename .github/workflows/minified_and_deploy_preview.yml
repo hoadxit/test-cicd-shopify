@@ -1,7 +1,7 @@
 name: Auto minified JS, CSS and Deploy Preview
 on:
   pull_request:
-    types: [opened, synchronize, closed]
+    types: [ closed]
 jobs:
   check_change:
     runs-on: ubuntu-latest
