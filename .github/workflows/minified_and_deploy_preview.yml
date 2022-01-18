@@ -35,8 +35,8 @@ jobs:
       - name: get id
         run: |
           A=$(awk -F'preview_theme_id=' '{print $2}' <<< "${{env.resTheme}}")
-
-          echo "$A"
+          B=$(awk -F'}}' '{print $1}' <<< "$A")
+          echo "preview_theme_id=$A" >> $GITHUB_ENV
 
       - name: Delete preview 1
         if: github.event.action == 'closed'
@@ -46,7 +46,7 @@ jobs:
         uses: mshick/add-pr-comment@v1
         with:
           message: |
-            Deployed successfully to ${{github.event.pull_request.number}}
+            Deployed successfully to ${{secrets.DP_SHOPIFY_STORE}}/?preview_theme_id=${{env.preview_theme_id}}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           repo-token-user-login: 'github-actions[bot]' # The user.login for temporary GitHub tokens
           allow-repeats: false # This is the default
