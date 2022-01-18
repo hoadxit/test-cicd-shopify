@@ -35,6 +35,8 @@ jobs:
           shopify theme push --unpublished --theme ${{github.event.pull_request.number}} --json  >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
           echo ${{env.themeCreate}}
+          echo ${{env.themeCreate.theme}}
+          
         
       - name: Delete preview
         if: github.event.action == 'closed'
