@@ -32,7 +32,7 @@ jobs:
           echo 'EOF' >> $GITHUB_ENV
         
       - name: Delete preview
-
+        if: github.event.action == 'closed'
         run: shopify theme delete {${{github.event.pull_request.id}}} -f -d
                     
       - name: Comment PR
