@@ -26,13 +26,14 @@ jobs:
         
       - name: Create and update preview  
         if: github.event.action != 'closed'
-        run: shopify theme push --unpublished --theme ${{github.event.pull_request.number}}
+        run: shopify theme push --unpublished --theme ${{github.event.pull_request.id}}
         
       - name: Test
         run: echo ${{github.event.pull_request.id}}
-        
+        if: github.event.action == 'closed'
       - name: Delete preview
-        run: shopify theme delete {${{github.event.pull_request.number}} } -f
+      
+        run: shopify theme delete {${{github.event.pull_request.id}}} -f
                     
       - name: Comment PR
         uses: mshick/add-pr-comment@v1
