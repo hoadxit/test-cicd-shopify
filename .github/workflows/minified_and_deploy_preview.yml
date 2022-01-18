@@ -32,14 +32,14 @@ jobs:
           shopify theme push --unpublished --theme ${{github.event.pull_request.number}} --json  >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
 
-      - name: get id
+      - name: Get PR ID
         run: |
           A=$(awk -F'preview_theme_id=' '{print $2}' <<< "${{env.resTheme}}")
           B=$(awk -F'}' '{print $1}' <<< "$A")
-      - name: set id
+      - name: Set PR ID
         run: echo "PR_THERME_ID=$B" >> $GITHUB_ENV
 
-      - name: Delete preview 1
+      - name: Delete preview 
         if: github.event.action == 'closed'
         run: shopify theme delete {${{github.event.pull_request.number}}} -f -d
                     
