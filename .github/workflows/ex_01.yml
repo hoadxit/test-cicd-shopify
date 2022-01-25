@@ -1,15 +1,11 @@
-name: GitHub Actions Ex 02
+name: GitHub Actions Ex 01
 on:
-  push:
-    branches: [ main, branch_1 ]
   pull_request: 
-    branches-ignore: [ main ]
-  workflow_run:
-    workflows: [GitHub Actions Ex 01]
-    types: [ completed ]
-     
+    branches: [ main, branch_1 ]
+    types: [ opened, closed ]
+    
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "This is EX 02 ."
+      - run: echo "This is EX 01 ."
