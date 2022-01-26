@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       trigger_next:
-        description: 'Whether to run the subsequent workflows after triggering this one manully.'
+        description: 'Whether to run t he subsequent workflows after triggering this one manully.'
   repository_dispatch:
     types: [echo3]
 jobs:
