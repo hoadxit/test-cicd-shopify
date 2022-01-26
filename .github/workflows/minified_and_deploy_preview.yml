@@ -1,7 +1,7 @@
 name: Auto minified JS, CSS and Deploy Preview
 on:
   pull_request:
-    types: [opened, synchronize, closed]
+    types: [opened, reopened, synchronize, closed]
 jobs:
   check_change:
     runs-on: ubuntu-latest
@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2 
         with:
-          fetch-depth: 2  # OR "2" -> To retrieve the preceding commit.
+          fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
 
       - name: Get changed files
         id: changed-files
@@ -26,13 +26,13 @@ jobs:
       if: github.event.action == 'opened' || needs.check_change.outputs.is_changed == 'true'
       steps:
       - uses: actions/checkout@v2 
-      
+
       - name: Auto Minify JS
         if: github.event.action == 'opened' || contains(needs.check_change.outputs.list_files, 'theme.js')
         uses: nizarmah/auto-minify@v2.1
         with: 
           directory: "assets/theme.js"
-          
+
       - name: Auto Minify Css
         if: github.event.action == 'opened' || contains(needs.check_change.outputs.list_files, 'theme.css')
         uses: nizarmah/auto-minify@v2.1
@@ -43,23 +43,77 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "Github Action: Auto Minified JS and CSS files"
+
   deploy_preview:
     runs-on: ubuntu-latest
-    name: 'Deploy Preview'
     needs: minified
-    if: ${{ always() }} 
+    if: ${{ always() }}
+    name: 'Deploy Preview'
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Shopify Theme Deploy Previews
+      - name: Install shopify-cli
+        run: 
+          sudo gem install shopify-cli
+      - name: Set Env
+        run: |
+          echo "CI=1" >> $GITHUB_ENV
+          echo "SHOPIFY_SHOP=${{secrets.DP_SHOPIFY_STORE}}" >> $GITHUB_ENV
+          echo "SHOPIFY_PASSWORD=${{secrets.DP_SHOPIFY_APP_PW}}" >> $GITHUB_ENV
+          
+      - name: Logged into store as staff 
+        run: |
+          shopify login [--store ${{env.SHOPIFY_SHOP}}]
+
+      - name: Pull theme PR
+        if: github.event.action != 'opened' && github.event.action != 'reopened'
+        run: |
+          echo 'PR_THERME<<EOF' >> $GITHUB_ENV
+          shopify theme pull -t ${{github.event.pull_request.number}} -n  >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+
+      - name: Get PR_THERME_ID
+        if: github.event.action != 'opened' && github.event.action != 'reopened'
+        run: |
+          export VL="${{env.PR_THERME}}"
+          export A=$(awk -F'#' '{print $2}' <<< "$VL")
+          export B=$(awk -F'\)' '{print $1}' <<< "$A")
+          
+          echo 'PR_THERME_ID<<EOF' >> $GITHUB_ENV
+          echo $B >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+
+      - name: Create new theme unpublished
+        if: github.event.action == 'opened' && github.event.action == 'reopened'
+        run: |
+          echo 'PR_THERME<<EOF' >> $GITHUB_ENV
+          shopify theme push --unpublished --json -t ${{github.event.pull_request.number}}  >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+
+      - name: Get PR_THERME_ID
+        if: github.event.action == 'opened' && github.event.action == 'reopened'
+        run: |
+          export VL="${{env.PR_THERME}}"
+          export A=$(awk -F'preview_theme_id=' '{print $2}' <<< "$VL")
+          export B=$(awk -F'}' '{print $1}' <<< "$A")
+          
+          echo 'PR_THERME_ID<<EOF' >> $GITHUB_ENV
+          echo $B >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+        
+
+      - name: Delete preview if merge PR
+        if: github.event.action == 'closed'
+        run: shopify theme delete {${{github.event.pull_request.id}}} -d
+                    
+      - name: Comment PR
         if: github.event.action != 'closed'
-        uses: wyugen/shopify-theme-action@v1
+        uses: mshick/add-pr-comment@v1
         with:
-          SHOPIFY_STORE: ${{secrets.DP_SHOPIFY_STORE}}
-          SHOPIFY_APP_PW: ${{secrets.DP_SHOPIFY_APP_PW}}
-          SHOPIFY_API_KEY: ${{secrets.DP_SHOPIFY_API_KEY}}
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          CI: 1
-          SHOPIFY_SHOP: ${{secrets.DP_SHOPIFY_STORE}}
-          SHOPIFY_PASSWORD: ${{secrets.DP_SHOPIFY_APP_PW}}
+          message: |
+            Deployed successfully to: /?preview_theme_id=${{env.PR_THERME_ID}}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token-user-login: 'github-actions[bot]' # The user.login for temporary GitHub tokens
+          allow-repeats: false # This is the default

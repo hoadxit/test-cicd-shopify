@@ -1010,7 +1010,7 @@
           "name": "Button",
           "settings": {
             "button_label": {
-              "label": "Button label",
+              "label": "Button label 001",
               "info": "Leave the label blank to hide the button."
             },
             "button_link": {
@@ -1646,7 +1646,7 @@
           }
         },
         "button_label": {
-          "label": "Button label"
+          "label": "Button label 001"
         },
         "button_link": {
           "label": "Button link"
@@ -1939,7 +1939,7 @@
           "name": "Button",
           "settings": {
             "button_label": {
-              "label": "Button label"
+              "label": "Button label 001"
             },
             "button_link": {
               "label": "Button link"
