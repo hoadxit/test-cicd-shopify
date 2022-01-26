@@ -32,7 +32,7 @@ jobs:
           echo 'EOF' >> $GITHUB_ENV
       - name: Get PR ID
         run: |
-          export VL=${{env.PR_THERME}}
+          export VL="${{env.PR_THERME}}"
           export A=$(awk -F'#' '{print $2}' <<< "$VL")
           export B=$(awk -F'\)' '{print $1}' <<< "$A")
           
