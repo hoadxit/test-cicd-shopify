@@ -116,4 +116,4 @@ jobs:
             Deployed successfully to: /?preview_theme_id=${{env.PR_THERME_ID}}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           repo-token-user-login: 'github-actions[bot]' # The user.login for temporary GitHub tokens
-          allow-repeats: false # This is the default
+          allow-repeats: true # This is the default
