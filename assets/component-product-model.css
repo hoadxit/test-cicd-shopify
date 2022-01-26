@@ -7,6 +7,7 @@
 }
 
 .button.product__xr-button:hover {
+  font-size: large;
   box-shadow: none;
 }
 

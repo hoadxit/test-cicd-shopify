@@ -89,7 +89,7 @@ jobs:
         if: github.event.action != 'opened' && github.event.action != 'reopened'
         run: |
           echo 'PR_THERME<<EOF' >> $GITHUB_ENV
-          shopify theme pull -t ${{github.event.pull_request.number}} -n  >> $GITHUB_ENV
+          shopify theme pull -t ${{github.event.pull_request.number}} -x /  >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
 
       - name: Get PR_THERME_ID

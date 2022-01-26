@@ -6,6 +6,7 @@
 .rich-text.rich-text--full-width {
   max-width: initial;
   width: 100%;
+  background-color: chocolate;
 }
 
 .rich-text__blocks {
