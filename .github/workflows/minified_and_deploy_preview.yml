@@ -14,7 +14,7 @@ jobs:
 
       - name: Install shopify-cli
         run: 
-          sudo gem install shopify-cli -v 2.8.0
+          sudo gem install shopify-cli
       - name: Set Env
         run: |
           echo "CI=1" >> $GITHUB_ENV
@@ -24,9 +24,15 @@ jobs:
       - name: Logged into store as staff 
         run: shopify login [--store ${{env.SHOPIFY_SHOP}}]
 
+      - name: Pull code
+        run: |
+          echo 'PR_THERME<<EOF' >> $GITHUB_ENV
+          shopify theme pull -t ${{github.event.pull_request.number}} -n  >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+
       - name: Create and update preview  
         if: github.event.action != 'closed'
-        run: shopify theme push --unpublished --theme ${{github.event.pull_request.id}} --json
+        run: shopify theme push --unpublished --json -t ${{github.event.pull_request.number}}
        # run: |
          # echo 'PR_THERME<<EOF' >> $GITHUB_ENV
          # shopify theme serve  >> $GITHUB_ENV
