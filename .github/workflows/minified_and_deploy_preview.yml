@@ -46,6 +46,8 @@ jobs:
 
   deploy_preview:
     runs-on: ubuntu-latest
+    needs: minified
+    if: ${{ always() }}
     name: 'Deploy Preview'
 
     steps:
