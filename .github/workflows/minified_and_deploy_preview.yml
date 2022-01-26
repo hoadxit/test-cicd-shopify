@@ -26,14 +26,14 @@ jobs:
           shopify login [--store ${{env.SHOPIFY_SHOP}}]
 
       - name: Pull Theme PR
-        if: github.event.action != 'opened' & github.event.action != 'reopened'
+        if: github.event.action != 'opened' && github.event.action != 'reopened'
         run: |
           echo 'PR_THERME<<EOF' >> $GITHUB_ENV
           shopify theme pull -t ${{github.event.pull_request.number}} -n  >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
 
       - name: Get PR_THERME_ID
-        if: github.event.action != 'opened' & github.event.action != 'reopened'
+        if: github.event.action != 'opened' && github.event.action != 'reopened'
         run: |
           export VL="${{env.PR_THERME}}"
           export A=$(awk -F'#' '{print $2}' <<< "$VL")
@@ -44,14 +44,14 @@ jobs:
           echo 'EOF' >> $GITHUB_ENV
 
       - name: Create New Theme Deployment
-        if: github.event.action == 'opened' & github.event.action == 'reopened'
+        if: github.event.action == 'opened' && github.event.action == 'reopened'
         run: |
           echo 'PR_THERME<<EOF' >> $GITHUB_ENV
           shopify theme push --unpublished --json -t ${{github.event.pull_request.number}}  >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
 
       - name: Get PR_THERME_ID
-        if: github.event.action == 'opened' & github.event.action == 'reopened'
+        if: github.event.action == 'opened' && github.event.action == 'reopened'
         run: |
           export VL="${{env.PR_THERME}}"
           export A=$(awk -F'preview_theme_id=' '{print $2}' <<< "$VL")
