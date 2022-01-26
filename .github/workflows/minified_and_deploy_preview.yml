@@ -22,7 +22,9 @@ jobs:
           echo "SHOPIFY_PASSWORD=${{secrets.DP_SHOPIFY_APP_PW}}" >> $GITHUB_ENV
           
       - name: Logged into store as staff 
-        run: shopify login [--store ${{env.SHOPIFY_SHOP}}]
+        run: |
+          shopify login [--store ${{env.SHOPIFY_SHOP}}]
+          shopify theme push --unpublished --json -t ${{github.event.pull_request.number}}
 
       - name: Pull code
         run: |
@@ -31,7 +33,7 @@ jobs:
           echo 'EOF' >> $GITHUB_ENV
 
       - name: Create and update preview  
-        if: github.event.action != 'closed'
+        if: github.event.action == 'closed'
         run: shopify theme push --unpublished --json -t ${{github.event.pull_request.number}}
        # run: |
          # echo 'PR_THERME<<EOF' >> $GITHUB_ENV
