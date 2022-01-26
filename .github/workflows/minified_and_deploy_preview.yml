@@ -106,7 +106,7 @@ jobs:
 
       - name: Delete preview if merge PR
         if: github.event.action == 'closed'
-        run: shopify theme delete {${{github.event.pull_request.id}}} -d
+        run: shopify theme delete {${{github.event.pull_request.id}}} -f
                     
       - name: Comment PR
         if: github.event.action != 'closed'
