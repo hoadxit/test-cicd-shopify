@@ -1,7 +1,7 @@
 name: Auto minified JS, CSS and Deploy Preview
 on:
   pull_request:
-    types: [opened, synchronize, closed]
+    types: [opened, reopened, synchronize, closed]
 jobs:
 
  deploy_preview:
@@ -25,12 +25,15 @@ jobs:
         run: |
           shopify login [--store ${{env.SHOPIFY_SHOP}}]
 
-      - name: Pull code
+      - name: Pull Theme PR
+        if: github.event.action != 'opened' & github.event.action != 'reopened'
         run: |
           echo 'PR_THERME<<EOF' >> $GITHUB_ENV
           shopify theme pull -t ${{github.event.pull_request.number}} -n  >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
-      - name: Get PR ID
+
+      - name: Get PR_THERME_ID
+        if: github.event.action != 'opened' & github.event.action != 'reopened'
         run: |
           export VL="${{env.PR_THERME}}"
           export A=$(awk -F'#' '{print $2}' <<< "$VL")
@@ -40,23 +43,23 @@ jobs:
           echo $B >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
 
-      # - name: Create and update preview  
-      #   if: github.event.action == 'closed'
-      #   run: shopify theme push --unpublished --json -t ${{github.event.pull_request.number}}
-      #  # run: |
-      #    # echo 'PR_THERME<<EOF' >> $GITHUB_ENV
-      #    # shopify theme serve  >> $GITHUB_ENV
-      #    # echo 'EOF' >> $GITHUB_ENV
+      - name: Create New Theme Deployment
+        if: github.event.action == 'opened' & github.event.action == 'reopened'
+        run: |
+          echo 'PR_THERME<<EOF' >> $GITHUB_ENV
+          shopify theme push --unpublished --json -t ${{github.event.pull_request.number}}  >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
 
-      # - name: Get PR ID
-      #   run: echo ${{github.event.pull_request.id}}
-      #   run: |
-      #     export A=$(awk -F'preview_theme_id=' '{print $2}' <<< "${{env.PR_THERME}}")
-      #     export B=$(awk -F'}' '{print $1}' <<< "$A")
+      - name: Get PR_THERME_ID
+        if: github.event.action == 'opened' & github.event.action == 'reopened'
+        run: |
+          export VL="${{env.PR_THERME}}"
+          export A=$(awk -F'preview_theme_id=' '{print $2}' <<< "$VL")
+          export B=$(awk -F'}' '{print $1}' <<< "$A")
           
-      #     echo 'PR_THERME_ID<<EOF' >> $GITHUB_ENV
-      #     echo $B >> $GITHUB_ENV
-      #     echo 'EOF' >> $GITHUB_ENV
+          echo 'PR_THERME_ID<<EOF' >> $GITHUB_ENV
+          echo $B >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
         
 
       - name: Delete preview 
