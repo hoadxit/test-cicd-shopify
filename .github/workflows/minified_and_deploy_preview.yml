@@ -67,6 +67,24 @@ jobs:
         run: |
           shopify login [--store ${{env.SHOPIFY_SHOP}}]
 
+      - name: Create new theme unpublished
+        if: github.event.action == 'opened' || github.event.action == 'reopened'
+        run: |
+          echo 'PR_THERME<<EOF' >> $GITHUB_ENV
+          shopify theme push --unpublished --json -t ${{github.event.pull_request.number}}  >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+
+      - name: Get PR_THERME_ID
+        if: github.event.action == 'opened' || github.event.action == 'reopened'
+        run: |
+          export VL="${{env.PR_THERME}}"
+          export A=$(awk -F'preview_theme_id=' '{print $2}' <<< "$VL")
+          export B=$(awk -F'}' '{print $1}' <<< "$A")
+          
+          echo 'PR_THERME_ID<<EOF' >> $GITHUB_ENV
+          echo $B >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+
       - name: Pull theme PR
         if: github.event.action != 'opened' && github.event.action != 'reopened'
         run: |
@@ -85,28 +103,14 @@ jobs:
           echo $B >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
 
-      - name: Create new theme unpublished
-        if: github.event.action == 'opened' || github.event.action == 'reopened'
-        run: |
-          echo 'PR_THERME<<EOF' >> $GITHUB_ENV
-          shopify theme push --unpublished --json -t ${{github.event.pull_request.number}}  >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV
-
-      - name: Get PR_THERME_ID
-        if: github.event.action == 'opened' || github.event.action == 'reopened'
-        run: |
-          export VL="${{env.PR_THERME}}"
-          export A=$(awk -F'preview_theme_id=' '{print $2}' <<< "$VL")
-          export B=$(awk -F'}' '{print $1}' <<< "$A")
-          
-          echo 'PR_THERME_ID<<EOF' >> $GITHUB_ENV
-          echo $B >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV
-        
+      
+      - name: Update theme 
+        if: github.event.action != 'opened' && github.event.action != 'reopened'
+        run: shopify theme push -t ${{env.PR_THERME_ID}}  
 
       - name: Delete preview if merge PR
         if: github.event.action == 'closed'
-        run: shopify theme delete {${{github.event.pull_request.id}}} -f
+        run: shopify theme delete ${{env.PR_THERME_ID}} -f
                     
       - name: Comment PR
         if: github.event.action != 'closed'
