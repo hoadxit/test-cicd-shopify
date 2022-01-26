@@ -27,7 +27,7 @@ jobs:
 
       - name: Create and update preview  
         if: github.event.action != 'closed'
-        run: shopify theme push --unpublished -t github.event.pull_request.id
+        run: shopify theme push --unpublished -t ${{github.event.pull_request.id}}
        # run: |
          # echo 'PR_THERME<<EOF' >> $GITHUB_ENV
          # shopify theme serve  >> $GITHUB_ENV
