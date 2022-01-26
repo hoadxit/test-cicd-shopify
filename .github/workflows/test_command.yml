@@ -3,6 +3,18 @@ name: Share data between jobs
 on: [push]
 
 jobs:
+  test1:
+    name: input Game
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download math result for job old
+        uses: actions/download-artifact@v2
+        with:
+          name: homework
+      - shell: bash
+        run: |
+          value=`cat math-homework.txt`
+          echo $value
   job_1:
     name: Add 3 and 7
     runs-on: ubuntu-latest
@@ -19,7 +31,7 @@ jobs:
   job_2:
     name: Multiply by 9
     needs: job_1
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Download math result for job 1
         uses: actions/download-artifact@v2
