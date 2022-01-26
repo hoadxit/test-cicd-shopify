@@ -17,6 +17,7 @@ var ok = ok || {};
             this.script = SCRIPT;
             this.s = arguments
             this.eventListener();
+            this.auto = this.auto;
         }
 
         loadBlock(callback) {
