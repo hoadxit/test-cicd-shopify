@@ -3,8 +3,48 @@ on:
   pull_request:
     types: [opened, reopened, synchronize, closed]
 jobs:
+  check_change:
+    runs-on: ubuntu-latest
+    outputs: 
+      is_changed: ${{steps.changed-files.outputs.any_changed}}
+      list_files: ${{steps.changed-files.outputs.all_modified_files}}
+    steps:
+      - uses: actions/checkout@v2 
+        with:
+          fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
 
- deploy_preview:
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v11.9
+        with:
+          files: 
+             assets/theme.js
+             assets/theme.css
+  minified:
+      runs-on: ubuntu-latest
+      needs: check_change
+      if: github.event.action == 'opened' || needs.check_change.outputs.is_changed == 'true'
+      steps:
+      - uses: actions/checkout@v2 
+
+      - name: Auto Minify JS
+        if: github.event.action == 'opened' || contains(needs.check_change.outputs.list_files, 'theme.js')
+        uses: nizarmah/auto-minify@v2.1
+        with: 
+          directory: "assets/theme.js"
+
+      - name: Auto Minify Css
+        if: github.event.action == 'opened' || contains(needs.check_change.outputs.list_files, 'theme.css')
+        uses: nizarmah/auto-minify@v2.1
+        with: 
+          directory: "assets/theme.css"
+
+      - name: Auto committing minified files
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Github Action: Auto Minified JS and CSS files"
+
+  deploy_preview:
     runs-on: ubuntu-latest
     name: 'Deploy Preview'
 
@@ -25,7 +65,7 @@ jobs:
         run: |
           shopify login [--store ${{env.SHOPIFY_SHOP}}]
 
-      - name: Pull Theme PR
+      - name: Pull theme PR
         if: github.event.action != 'opened' && github.event.action != 'reopened'
         run: |
           echo 'PR_THERME<<EOF' >> $GITHUB_ENV
@@ -43,7 +83,7 @@ jobs:
           echo $B >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
 
-      - name: Create New Theme Deployment
+      - name: Create new theme unpublished
         if: github.event.action == 'opened' && github.event.action == 'reopened'
         run: |
           echo 'PR_THERME<<EOF' >> $GITHUB_ENV
@@ -62,7 +102,7 @@ jobs:
           echo 'EOF' >> $GITHUB_ENV
         
 
-      - name: Delete preview 
+      - name: Delete preview if merge PR
         if: github.event.action == 'closed'
         run: shopify theme delete {${{github.event.pull_request.id}}} -d
                     
