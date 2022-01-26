@@ -11,12 +11,16 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: homework
-      - shell: bash
+          
+      - name: Print the final result
+        shell: bash
         run: |
           value=`cat math-homework.txt`
-          echo $value
+          echo The rs $value
+          
   job_1:
     name: Add 3 and 7
+    needs: test1
     runs-on: ubuntu-latest
     steps:
       - shell: bash
