@@ -24,7 +24,6 @@ jobs:
       - name: Logged into store as staff 
         run: |
           shopify login [--store ${{env.SHOPIFY_SHOP}}]
-          shopify theme push --unpublished --json -t ${{github.event.pull_request.number}}
 
       - name: Pull code
         run: |
@@ -33,8 +32,8 @@ jobs:
           echo 'EOF' >> $GITHUB_ENV
       - name: Get PR ID
         run: |
-          export A=$(awk -F'(#' '{print $2}' <<< "${{env.PR_THERME}}")
-          export B=$(awk -F')' '{print $1}' <<< "$A")
+          export A=$(awk -F'/(#/' '{print $2}' <<< "${{env.PR_THERME}}")
+          export B=$(awk -F'/)/' '{print $1}' <<< "$A")
           
           echo 'PR_THERME_ID<<EOF' >> $GITHUB_ENV
           echo $B >> $GITHUB_ENV
