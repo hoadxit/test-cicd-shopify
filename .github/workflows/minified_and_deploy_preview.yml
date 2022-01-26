@@ -31,17 +31,25 @@ jobs:
           echo 'PR_THERME<<EOF' >> $GITHUB_ENV
           shopify theme pull -t ${{github.event.pull_request.number}} -n  >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
-
-      - name: Create and update preview  
-        if: github.event.action == 'closed'
-        run: shopify theme push --unpublished --json -t ${{github.event.pull_request.number}}
-       # run: |
-         # echo 'PR_THERME<<EOF' >> $GITHUB_ENV
-         # shopify theme serve  >> $GITHUB_ENV
-         # echo 'EOF' >> $GITHUB_ENV
-
       - name: Get PR ID
-        run: echo ${{github.event.pull_request.id}}
+        run: |
+          export A=$(awk -F'(#' '{print $2}' <<< "${{env.PR_THERME}}")
+          export B=$(awk -F')' '{print $1}' <<< "$A")
+          
+          echo 'PR_THERME_ID<<EOF' >> $GITHUB_ENV
+          echo $B >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+
+      # - name: Create and update preview  
+      #   if: github.event.action == 'closed'
+      #   run: shopify theme push --unpublished --json -t ${{github.event.pull_request.number}}
+      #  # run: |
+      #    # echo 'PR_THERME<<EOF' >> $GITHUB_ENV
+      #    # shopify theme serve  >> $GITHUB_ENV
+      #    # echo 'EOF' >> $GITHUB_ENV
+
+      # - name: Get PR ID
+      #   run: echo ${{github.event.pull_request.id}}
       #   run: |
       #     export A=$(awk -F'preview_theme_id=' '{print $2}' <<< "${{env.PR_THERME}}")
       #     export B=$(awk -F'}' '{print $1}' <<< "$A")
@@ -51,15 +59,16 @@ jobs:
       #     echo 'EOF' >> $GITHUB_ENV
         
 
-      # - name: Delete preview 
-      #   if: github.event.action == 'closed'
-      #   run: shopify theme delete {${{github.event.pull_request.id}}} -f -d
+      - name: Delete preview 
+        if: github.event.action == 'closed'
+        run: shopify theme delete {${{github.event.pull_request.id}}} -d
                     
-      # - name: Comment PR
-      #   uses: mshick/add-pr-comment@v1
-      #   with:
-      #     message: |
-      #       Deployed successfully to ${{secrets.DP_SHOPIFY_STORE}}/?preview_theme_id=${{env.PR_THERME_ID}}
-      #     repo-token: ${{ secrets.GITHUB_TOKEN }}
-      #     repo-token-user-login: 'github-actions[bot]' # The user.login for temporary GitHub tokens
-      #     allow-repeats: false # This is the default
+      - name: Comment PR
+        if: github.event.action != 'closed'
+        uses: mshick/add-pr-comment@v1
+        with:
+          message: |
+            Deployed successfully to: /?preview_theme_id=${{env.PR_THERME_ID}}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token-user-login: 'github-actions[bot]' # The user.login for temporary GitHub tokens
+          allow-repeats: false # This is the default
