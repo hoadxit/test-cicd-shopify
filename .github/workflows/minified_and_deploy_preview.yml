@@ -49,15 +49,16 @@ jobs:
     needs: minified
     if: ${{ always() }}
     name: 'Deploy Preview'
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
       - name: Install shopify-cli
         run: 
-          sudo gem install shopify-cli
-      - name: Set Env
+          sudo gem install shopify-cli -v 2.10.0
+          
+        #Secret environment variable that turns shopify CLI into CI mode that accepts environment credentials
+      - name: Set env 
         run: |
           echo "CI=1" >> $GITHUB_ENV
           echo "SHOPIFY_SHOP=${{secrets.DP_SHOPIFY_STORE}}" >> $GITHUB_ENV
@@ -66,58 +67,57 @@ jobs:
       - name: Logged into store as staff 
         run: |
           shopify login [--store ${{env.SHOPIFY_SHOP}}]
-
+          
       - name: Create new theme unpublished
         if: github.event.action == 'opened' || github.event.action == 'reopened'
         run: |
-          echo 'PR_THERME<<EOF' >> $GITHUB_ENV
-          shopify theme push --unpublished --json -t ${{github.event.pull_request.number}}  >> $GITHUB_ENV
+          echo 'PR_THEME<<EOF' >> $GITHUB_ENV
+          shopify theme push --unpublished --json -t PR#${{github.event.pull_request.number}}  >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
-
-      - name: Get PR_THERME_ID
+          
+      - name: Get PR_THEME_ID
         if: github.event.action == 'opened' || github.event.action == 'reopened'
         run: |
-          export VL="${{env.PR_THERME}}"
-          export A=$(awk -F'preview_theme_id=' '{print $2}' <<< "$VL")
+          export PRTHEME="${{env.PR_THEME}}"
+          export A=$(awk -F'preview_theme_id=' '{print $2}' <<< "$PRTHEME")
           export B=$(awk -F'}' '{print $1}' <<< "$A")
           
-          echo 'PR_THERME_ID<<EOF' >> $GITHUB_ENV
+          echo 'PR_THEME_ID<<EOF' >> $GITHUB_ENV
           echo $B >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
-
+          
       - name: Pull theme PR
-        if: github.event.action != 'opened' && github.event.action != 'reopened'
+        if: github.event.action == 'synchronize' || github.event.action == 'closed'
         run: |
-          echo 'PR_THERME<<EOF' >> $GITHUB_ENV
-          shopify theme pull -t ${{github.event.pull_request.number}} -x /  >> $GITHUB_ENV
+          echo 'PR_THEME<<EOF' >> $GITHUB_ENV
+          shopify theme pull -t PR#${{github.event.pull_request.number}} -x /  >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
-
-      - name: Get PR_THERME_ID
-        if: github.event.action != 'opened' && github.event.action != 'reopened'
+          
+      - name: Get PR_THEME_ID
+        if: github.event.action == 'synchronize' || github.event.action == 'closed'
         run: |
-          export VL="${{env.PR_THERME}}"
-          export A=$(awk -F'#' '{print $2}' <<< "$VL")
+          export PRTHEME="${{env.PR_THEME}}"
+          export A=$(awk -F'#' '{print $2}' <<< "$PRTHEME")
           export B=$(awk -F'\)' '{print $1}' <<< "$A")
           
-          echo 'PR_THERME_ID<<EOF' >> $GITHUB_ENV
+          echo 'PR_THEME_ID<<EOF' >> $GITHUB_ENV
           echo $B >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
-
       
       - name: Update theme 
-        if: github.event.action != 'opened' && github.event.action != 'reopened'
-        run: shopify theme push -t ${{env.PR_THERME_ID}}  
+        if: github.event.action == 'synchronize'
+        run: shopify theme push -t ${{env.PR_THEME_ID}}  
 
       - name: Delete preview if merge PR
         if: github.event.action == 'closed'
-        run: shopify theme delete ${{env.PR_THERME_ID}} -f
+        run: shopify theme delete ${{env.PR_THEME_ID}} -f
                     
       - name: Comment PR
         if: github.event.action != 'closed'
         uses: mshick/add-pr-comment@v1
         with:
           message: |
-            Deployed successfully to: /?preview_theme_id=${{env.PR_THERME_ID}}
+            Deployed successfully to https://shen-yun-shop-dev.myshopify.com/?preview_theme_id=${{env.PR_THEME_ID}}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           repo-token-user-login: 'github-actions[bot]' # The user.login for temporary GitHub tokens
           allow-repeats: false # This is the default
