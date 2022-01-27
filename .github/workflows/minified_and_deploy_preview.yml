@@ -89,13 +89,8 @@ jobs:
       - name: Pull theme PR
         if: github.event.action == 'synchronize' || github.event.action == 'closed'
         run: |
-<<<<<<< HEAD
           echo 'PR_THEME<<EOF' >> $GITHUB_ENV
           shopify theme pull -t PR#${{github.event.pull_request.number}} -x /  >> $GITHUB_ENV
-=======
-          echo 'PR_THERME<<EOF' >> $GITHUB_ENV
-          shopify theme pull -t ${{github.event.pull_request.number}} -x /  >> $GITHUB_ENV
->>>>>>> b250d12fe948f9df482c0b2e6c1b721f1881b4f3
           echo 'EOF' >> $GITHUB_ENV
           
       - name: Get PR_THEME_ID
