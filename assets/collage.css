@@ -233,6 +233,7 @@
 
   .collage-card__no-image h3 {
     font-size: calc(var(--font-heading-scale) * 3rem);
+    
   }
 }
 
