@@ -17,7 +17,6 @@ jobs:
         #Secret environment variable that turns shopify CLI into CI mode that accepts environment credentials
       - name: Set env 
         run: |
-          echo "SHOPIFY_SHOP=${{secrets.DP_SHOPIFY_STORE}}" >> $GITHUB_ENV
           export CI=1 
           export SHOPIFY_SHOP="${{secrets.DP_SHOPIFY_STORE}}"
           export SHOPIFY_PASSWORD="${{secrets.DP_SHOPIFY_APP_PW}}"
@@ -27,8 +26,7 @@ jobs:
           
       - name: Logged into store as staff 
         run: |
-          shopify login [--store ${{env.SHOPIFY_SHOP}}]
-          
+          shopify login
       - name: Create new theme unpublished
         # if: github.event.action == 'opened' || github.event.action == 'reopened'
         run: |
