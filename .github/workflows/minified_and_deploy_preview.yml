@@ -20,31 +20,34 @@ jobs:
           echo "CI=1" >> $GITHUB_ENV
           echo "SHOPIFY_SHOP=${{secrets.DP_SHOPIFY_STORE}}" >> $GITHUB_ENV
           echo "SHOPIFY_PASSWORD=${{secrets.DP_SHOPIFY_APP_PW}}" >> $GITHUB_ENV
+          export CI=1
+          export SHOPIFY_SHOP=${{secrets.DP_SHOPIFY_STORE}}
+          export SHOPIFY_PASSWORD=${{secrets.DP_SHOPIFY_APP_PW}}
           echo $CI
           echo $SHOPIFY_SHOP
           echo $SHOPIFY_PASSWORD
           
-      # - name: Logged into store as staff 
-      #   run: |
-      #     shopify login [--store ${{env.SHOPIFY_SHOP}}]
+      - name: Logged into store as staff 
+        run: |
+          shopify login [--store ${{env.SHOPIFY_SHOP}}]
           
-      # - name: Create new theme unpublished
-      #   if: github.event.action == 'opened' || github.event.action == 'reopened'
-      #   run: |
-      #     echo 'PR_THEME<<EOF' >> $GITHUB_ENV
-      #     shopify theme push --unpublished --json -t PR#${{github.event.pull_request.number}}  >> $GITHUB_ENV
-      #     echo 'EOF' >> $GITHUB_ENV
+      - name: Create new theme unpublished
+        # if: github.event.action == 'opened' || github.event.action == 'reopened'
+        run: |
+          echo 'PR_THEME<<EOF' >> $GITHUB_ENV
+          shopify theme push --unpublished --json -t PR#${{github.event.pull_request.number}}  >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
           
-      # - name: Get PR_THEME_ID
-      #   if: github.event.action == 'opened' || github.event.action == 'reopened'
-      #   run: |
-      #     export PRTHEME="${{env.PR_THEME}}"
-      #     export A=$(awk -F'preview_theme_id=' '{print $2}' <<< "$PRTHEME")
-      #     export B=$(awk -F'}' '{print $1}' <<< "$A")
+      - name: Get PR_THEME_ID
+        # if: github.event.action == 'opened' || github.event.action == 'reopened'
+        run: |
+          export PRTHEME="${{env.PR_THEME}}"
+          export A=$(awk -F'preview_theme_id=' '{print $2}' <<< "$PRTHEME")
+          export B=$(awk -F'}' '{print $1}' <<< "$A")
           
-      #     echo 'PR_THEME_ID<<EOF' >> $GITHUB_ENV
-      #     echo $B >> $GITHUB_ENV
-      #     echo 'EOF' >> $GITHUB_ENV
+          echo 'PR_THEME_ID<<EOF' >> $GITHUB_ENV
+          echo $B >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
           
       # - name: Pull theme PR
       #   if: github.event.action == 'synchronize' || github.event.action == 'closed'
