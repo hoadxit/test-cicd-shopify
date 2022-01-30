@@ -4,6 +4,9 @@
   }
   .collage-section + .collection-list-section .no-heading:not(.no-mobile-link) {
     margin-top: -1rem;
+    
+
+    
   }
 }
 
