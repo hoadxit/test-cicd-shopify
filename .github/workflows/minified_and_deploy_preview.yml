@@ -26,7 +26,7 @@ jobs:
           
       - name: Logged into store as staff 
         run: |
-          shopify login [--store ${{env.SHOPIFY_SHOP}}]
+          shopify login [--store $SHOPIFY_SHOP]
           
       - name: Create new theme unpublished
         # if: github.event.action == 'opened' || github.event.action == 'reopened'
