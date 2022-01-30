@@ -5,6 +5,7 @@ on:
 jobs:
   deploy_preview:
     name: 'Deploy Preview'
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
