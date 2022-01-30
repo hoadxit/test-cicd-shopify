@@ -32,7 +32,7 @@ jobs:
 #         run: |
 #           echo 'PR_THEME<<EOF' >> $GITHUB_ENV
 #           shopify theme push --unpublished --json -t PR#${{github.event.pull_request.number}}  >> $GITHUB_ENV
-#           echo 'EOF' >> $GITHUB_ENV
+#           echo 'EOF' >> $GITHUB_ENV 
           
 #       - name: Get PR_THEME_ID
 #         if: github.event.action == 'opened' || github.event.action == 'reopened'
