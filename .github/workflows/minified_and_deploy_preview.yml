@@ -12,7 +12,7 @@ jobs:
 
       - name: Install shopify-cli
         run: 
-          sudo gem install shopify-cli -v 2.10.0
+          sudo gem install shopify-cli 
           
         #Secret environment variable that turns shopify CLI into CI mode that accepts environment credentials
       - name: Set env 
