@@ -13,6 +13,7 @@ jobs:
       with:
           types_PR: ${{ github.event.action }}
           number_PR: ${{ github.event.pull_request.number }}
+      secrets:
           DP_SHOPIFY_STORE: ${{ secrets.DP_SHOPIFY_STORE }}
           DP_SHOPIFY_APP_PW: ${{ secrets.DP_SHOPIFY_APP_PW }}
 
