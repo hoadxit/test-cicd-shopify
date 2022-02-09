@@ -4,7 +4,7 @@ on:
     types: [opened, reopened, synchronize, closed]
 jobs:
   minified:
-    - name: 'Auto minified JS and CSS'
+    - name: Auto minified JS and CSS
       uses: ./.github/workflows/minified
       with:
           types_PR: ${{ github.event.action }}
