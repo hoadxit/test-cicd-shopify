@@ -24,7 +24,7 @@ jobs:
           files: 
              assets/theme.js
              assets/theme.css
-  minified:
+    minified:
       runs-on: ubuntu-latest
       needs: check_change
       if: inputs.types_PR == 'opened' || needs.check_change.outputs.is_changed == 'true'
