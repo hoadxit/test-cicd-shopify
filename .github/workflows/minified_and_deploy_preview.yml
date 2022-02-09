@@ -48,6 +48,7 @@ jobs:
         id: create_theme
         if: steps.check_theme.outcome != 'success'
         continue-on-error: true
+        timeout-minutes: 2
         run: |
           shopify theme push --unpublished --json -t PR#${{github.event.pull_request.number}}
           echo 'PR_THEME<<EOF' >> $GITHUB_ENV
