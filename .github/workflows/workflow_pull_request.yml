@@ -1,20 +1,18 @@
 name: Workflow pull request
 on:
   pull_request:
-    types: [opened]
+    types: [opened, reopened, synchronize, closed]
 jobs:
   auto_minified:
-      uses: ./.github/workflows/minified.yml
+      uses: hoadxit/light/.github/workflows/minified.yml@main
       with:
           types_PR: ${{ github.event.action }}
 
   deploy_preview:
-      uses: ./.github/workflows/deploy_preview.yml
+      uses: hoadxit/light/.github/workflows/deploy_preview.yml@main
       with:
           types_PR: ${{ github.event.action }}
           number_PR: ${{ github.event.pull_request.number }}
       secrets:
           DP_SHOPIFY_STORE: ${{ secrets.DP_SHOPIFY_STORE }}
           DP_SHOPIFY_APP_PW: ${{ secrets.DP_SHOPIFY_APP_PW }}
-
-        
