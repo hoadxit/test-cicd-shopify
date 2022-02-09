@@ -4,9 +4,9 @@ on:
     types: [opened, reopened, synchronize, closed]
 jobs:
   auto_minified:
-      uses: minified.yml
-      with:
-          types_PR: ${{ github.event.action }}
+  uses: ./.github/workflows/minified.yml
+  with:
+    types_PR: ${{ github.event.action }}
 
   # deploy_preview:
   #     uses: ./.github/workflows/deploy_preview.yml
