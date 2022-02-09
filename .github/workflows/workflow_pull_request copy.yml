@@ -1,0 +1,20 @@
+# name: Workflow pull request
+# on:
+#   pull_request:
+#     types: [opened, reopened, synchronize, closed]
+# jobs:
+#   auto_minified:
+#       uses: ./.github/workflows/minified.yml
+#       with:
+#           types_PR: ${{ github.event.action }}
+
+#   deploy_preview:
+#       uses: ./.github/workflows/deploy_preview.yml
+#       with:
+#           types_PR: ${{ github.event.action }}
+#           number_PR: ${{ github.event.pull_request.number }}
+#       secrets:
+#           DP_SHOPIFY_STORE: ${{ secrets.DP_SHOPIFY_STORE }}
+#           DP_SHOPIFY_APP_PW: ${{ secrets.DP_SHOPIFY_APP_PW }}
+
+        
