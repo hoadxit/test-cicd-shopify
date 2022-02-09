@@ -10,6 +10,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - uses: .github/workflows/minified2.yml
+      - uses: .github/workflows/minified2
   
         
