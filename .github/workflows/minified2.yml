@@ -1,0 +1,9 @@
+name: Auto minified JS and CSS
+on:
+  workflow_call:
+
+jobs:
+  check_change:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2 

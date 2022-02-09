@@ -5,8 +5,8 @@ on:
 jobs:
   auto_minified:
   uses: ./.github/workflows/minified.yml
-  with:
-    types_PR: ${{ github.event.action }}
+  # with:
+  #   types_PR: ${{ github.event.action }}
 
   # deploy_preview:
   #     uses: ./.github/workflows/deploy_preview.yml
