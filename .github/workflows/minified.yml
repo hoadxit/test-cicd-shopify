@@ -9,21 +9,21 @@ on:
 jobs:
   check_change:
     runs-on: ubuntu-latest
-    outputs: 
-      is_changed: ${{steps.changed-files.outputs.any_changed}}
-      list_files: ${{steps.changed-files.outputs.all_modified_files}}
+    # outputs: 
+    #   is_changed: ${{steps.changed-files.outputs.any_changed}}
+    #   list_files: ${{steps.changed-files.outputs.all_modified_files}}
     steps:
       - uses: actions/checkout@v2 
         with:
           fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
 
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@v11.9
-        with:
-          files: 
-             assets/theme.js
-             assets/theme.css
+      # - name: Get changed files
+      #   id: changed-files
+      #   uses: tj-actions/changed-files@v11.9
+      #   with:
+      #     files: 
+      #        assets/theme.js
+      #        assets/theme.css
   # minified:
   #   runs-on: ubuntu-latest
   #   needs: check_change
