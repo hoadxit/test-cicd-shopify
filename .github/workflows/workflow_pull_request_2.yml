@@ -1,9 +1,0 @@
-name: Workflow pull request
-on:
-  pull_request:
-    types: [opened, reopened, synchronize, closed]
-jobs:
-   update_deploy_preview:
-    uses: ./.github/workflows/minified2.yml
-  
-        
