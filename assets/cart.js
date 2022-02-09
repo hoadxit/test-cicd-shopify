@@ -21,6 +21,7 @@ class CartItems extends HTMLElement {
 
     this.debouncedOnChange = debounce((event) => {
       this.onChange(event);
+      
     }, 300);
 
     this.addEventListener('change', this.debouncedOnChange.bind(this));
