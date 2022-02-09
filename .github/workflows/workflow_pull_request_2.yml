@@ -5,5 +5,7 @@ on:
 jobs:
   auto_minified:
     uses: ./.github/workflows/minified2.yml
+    steps:
+      - uses: actions/checkout@v2 
   
         
