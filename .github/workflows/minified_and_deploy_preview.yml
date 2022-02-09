@@ -54,6 +54,7 @@ jobs:
           echo 'EOF' >> $GITHUB_ENV
           
       - name: Get PR_THEME_ID new
+        needs: create_theme
         if: steps.create_theme.outcome != 'success' 
         run: |
           export PR_THEME="${{env.PR_THEME}}"
