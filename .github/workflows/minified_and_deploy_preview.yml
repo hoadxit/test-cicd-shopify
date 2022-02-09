@@ -55,7 +55,7 @@ jobs:
           shopify theme pull -t PR#${{github.event.pull_request.number}} -x /  >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
 
-      - name: Get PR_THEME_ID already
+      - name: Get PR_THEME_ID
         if: steps.check_theme.outcome == 'success' || steps.create_theme.outcome == 'success'
         run: |
           export PR_THEME="${{env.PR_THEME}}"
@@ -65,16 +65,6 @@ jobs:
           echo 'PR_THEME_ID<<EOF' >> $GITHUB_ENV
           echo $B >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
-      # - name: Get PR_THEME_ID new
-      #   if: steps.check_theme.outcome != 'success' && steps.create_theme.outcome == 'success'  
-      #   run: |
-      #     export PR_THEME="${{env.PR_THEME}}"
-      #     export A=$(awk -F'preview_theme_id=' '{print $2}' <<< "$PR_THEME")
-      #     export B=$(awk -F'}' '{print $1}' <<< "$A")
-                    
-      #     echo 'PR_THEME_ID<<EOF' >> $GITHUB_ENV
-      #     echo $B >> $GITHUB_ENV
-      #     echo 'EOF' >> $GITHUB_ENV
       
       - name: Update theme 
         if: steps.check_theme.outcome == 'success'
@@ -85,7 +75,7 @@ jobs:
         run: shopify theme delete ${{env.PR_THEME_ID}} -f
                     
       - name: Comment PR
-        if: github.event.action != 'closed' || steps.create_theme.outcome == 'success'
+        if: github.event.action != 'closed' && steps.create_theme.outcome != 'failure'
         uses: mshick/add-pr-comment@v1
         with:
           message: |
@@ -95,11 +85,11 @@ jobs:
           allow-repeats: false # This is the default
 
       - name: Comment PR
-        if: steps.create_theme.outcome != 'success'
+        if: github.event.action != 'closed' && steps.create_theme.outcome == 'failure'
         uses: mshick/add-pr-comment@v1
         with:
           message: |
-            No comment
+            Unable to create a new theme. The limit of 20 themes has been reached.
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           repo-token-user-login: 'github-actions[bot]' # The user.login for temporary GitHub tokens
           allow-repeats: false # This is the default
