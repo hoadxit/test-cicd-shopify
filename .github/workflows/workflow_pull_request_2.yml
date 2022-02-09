@@ -4,12 +4,6 @@ on:
     types: [opened, reopened, synchronize, closed]
 jobs:
    update_deploy_preview:
-    name: 'Update Deploy Preview'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-        
-      - uses: ./minified2
+    uses: ./.github/workflows/minified2.yml
   
         
