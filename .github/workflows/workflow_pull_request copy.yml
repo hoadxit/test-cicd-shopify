@@ -1,9 +1,9 @@
 name: Workflow pull request
 on:
   pull_request:
-    types: [opened, reopened, synchronize, closed]
+    types: [opened]
 jobs:
-  minified:
+  auto_minified:
       uses: ./.github/workflows/minified.yml
       with:
           types_PR: ${{ github.event.action }}
