@@ -3,7 +3,7 @@ on:
   pull_request:
     types: [opened, reopened, synchronize, closed]
 jobs:
-  auto_minified:
+   update_deploy_preview:
     uses: ./.github/workflows/minified2.yml
   
         
