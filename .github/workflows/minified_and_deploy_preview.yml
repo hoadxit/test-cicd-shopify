@@ -3,8 +3,8 @@ on:
   pull_request:
     types: [opened, reopened, synchronize, closed]
 jobs:
-  deploy_preview:
-    name: 'Deploy Preview'
+  update_deploy_preview:
+    name: 'Update Deploy Preview'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -25,53 +25,55 @@ jobs:
         run: |
           shopify login [--store ${{env.SHOPIFY_SHOP}}]
 
-      - name: Pull theme PR
+      - name: Check theme PR
+        continue-on-error: true
+        id: check_theme
         run: |
           echo 'PR_THEME<<EOF' >> $GITHUB_ENV
           shopify theme pull -t PR#${{github.event.pull_request.number}} -x /  >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
 
-          echo 'THEME_ALREADY<<EOF' >> $GITHUB_ENV
-          echo $?  >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV 
-
-      - name: Create new theme unpublished
-        if: env.THEME_ALREADY != 0
+      - name: Get PR_THEME_ID already
+        if: steps.pull_theme.outcome == 'success'
         run: |
-          echo 'PR_THEME<<EOF' >> $GITHUB_ENV
-          shopify theme push --unpublished --json -t PR#${{github.event.pull_request.number}}  >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV
-          
-      - name: Get PR_THEME_ID
-        if: env.THEME_ALREADY != 0
-        run: |
-          export PRTHEME="${{env.PR_THEME}}"
-          export A=$(awk -F'preview_theme_id=' '{print $2}' <<< "$PRTHEME")
-          export B=$(awk -F'}' '{print $1}' <<< "$A")
-          
-     
-          
-      - name: Get PR_THEME_ID
-        if: env.THEME_ALREADY == 0
-        run: |
-          export PRTHEME="${{env.PR_THEME}}"
-          export A=$(awk -F'#' '{print $3}' <<< "$PRTHEME")
+          export PR_THEME="${{env.PR_THEME}}"
+          export A=$(awk -F'#' '{print $3}' <<< "$PR_THEME")
           export B=$(awk -F'\)' '{print $1}' <<< "$A")
           
           echo 'PR_THEME_ID<<EOF' >> $GITHUB_ENV
           echo $B >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
+
+      - name: Create new theme unpublished
+        id: create_theme
+        if: steps.check_theme.outcome != 'success'
+        continue-on-error: true
+        run: |
+          echo 'PR_THEME<<EOF' >> $GITHUB_ENV
+          shopify theme push --unpublished --json -t PR#${{github.event.pull_request.number}}  >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+          
+      - name: Get PR_THEME_ID new
+        if: steps.create_theme.outcome != 'success' 
+        run: |
+          export PR_THEME="${{env.PR_THEME}}"
+          export A=$(awk -F'preview_theme_id=' '{print $2}' <<< "$PR_THEME")
+          export B=$(awk -F'}' '{print $1}' <<< "$A")
+                    
+          echo 'PR_THEME_ID<<EOF' >> $GITHUB_ENV
+          echo $B >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
       
       - name: Update theme 
-        # if: github.event.action == 'synchronize'
+        if: steps.check_theme.outcome != 'success'
         run: shopify theme push -t ${{env.PR_THEME_ID}}  
 
-      # - name: Delete preview if merge PR
-      #   if: github.event.action == 'closed'
-      #   run: shopify theme delete ${{env.PR_THEME_ID}} -f
+      - name: Delete preview if merge PR
+        if: github.event.action == 'closed'
+        run: shopify theme delete ${{env.PR_THEME_ID}} -f
                     
       - name: Comment PR
-        if: github.event.action != 'closed'
+        if: github.event.action != 'closed' || steps.create_theme.outcome == 'success'
         uses: mshick/add-pr-comment@v1
         with:
           message: |
