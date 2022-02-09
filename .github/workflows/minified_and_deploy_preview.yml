@@ -65,8 +65,8 @@ jobs:
           echo 'EOF' >> $GITHUB_ENV
       
       - name: Update theme 
-        if: steps.check_theme.outcome != 'success'
-        run: shopify theme push -t ${{env.PR_THEME_ID}}  
+        if: steps.check_theme.outcome == 'success'
+        run: shopify theme push -t ${{env.PR_THEME_ID}}
 
       - name: Delete preview if merge PR
         if: github.event.action == 'closed'
