@@ -4,12 +4,12 @@ on:
     types: [opened, reopened, synchronize, closed]
 jobs:
   minified:
-      uses: ./.github/workflows/minified
+      uses: ./.github/workflows/minified.yml@main
       with:
           types_PR: ${{ github.event.action }}
 
   deploy_preview:
-      uses: ./.github/workflows/deploy_preview
+      uses: ./.github/workflows/deploy_preview.yml@main
       with:
           types_PR: ${{ github.event.action }}
           number_PR: ${{ github.event.pull_request.number }}
