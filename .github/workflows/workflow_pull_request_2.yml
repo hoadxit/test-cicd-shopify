@@ -3,9 +3,13 @@ on:
   pull_request:
     types: [opened, reopened, synchronize, closed]
 jobs:
-  auto_minified:
-    uses: ./.github/workflows/minified2.yml
+   update_deploy_preview:
+    name: 'Update Deploy Preview'
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2 
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        
+      - uses: ./.github/workflows/minified2.yml
   
         
