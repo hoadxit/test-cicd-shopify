@@ -81,3 +81,13 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           repo-token-user-login: 'github-actions[bot]' # The user.login for temporary GitHub tokens
           allow-repeats: false # This is the default
+
+      - name: Comment PR
+        if: steps.create_theme.outcome != 'success'
+        uses: mshick/add-pr-comment@v1
+        with:
+          message: |
+            No comment
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token-user-login: 'github-actions[bot]' # The user.login for temporary GitHub tokens
+          allow-repeats: false # This is the default
