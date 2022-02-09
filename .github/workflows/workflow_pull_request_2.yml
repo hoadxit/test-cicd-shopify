@@ -4,7 +4,7 @@ on:
     types: [opened, reopened, synchronize, closed]
 jobs:
   auto_minified:
-      uses: ./.github/actions/minified@v1
+      uses: .github/workflows/minified.yml
       with:
           types_PR: ${{ github.event.action }}
 
