@@ -2,6 +2,7 @@ name: Workflow pull request
 on:
   pull_requests:
     types: [opened, reopened, synchronize, closed]
+    branch: [afd]
 jobs:
   auto_minified:
       uses: hoadxit/light/.github/workflows/minified.yml@main
@@ -16,3 +17,4 @@ jobs:
       secrets:
           DP_SHOPIFY_STORE: ${{ secrets.DP_SHOPIFY_STORE }}
           DP_SHOPIFY_APP_PW: ${{ secrets.DP_SHOPIFY_APP_PW }}
+          DP_SHOPIFY_CLI_VERSION: ${{ secrets.DP_SHOPIFY_CLI_VERSION }}
