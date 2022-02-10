@@ -1,6 +1,6 @@
 name: Workflow pull request
 on:
-  pull_request:
+  pull_requests:
     types: [opened, reopened, synchronize, closed]
 jobs:
   auto_minified:
