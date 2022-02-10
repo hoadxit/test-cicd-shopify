@@ -13,7 +13,8 @@ on:
         required: true
       DP_SHOPIFY_APP_PW:
         required: true
-    
+      DP_SHOPIFY_CLI_VERSION:
+        required: true
 
 jobs:
   update_deploy_preview:
@@ -25,11 +26,11 @@ jobs:
 
                 #Secret environment variable that turns shopify CLI into CI mode that accepts environment credentials
       - name: Set env 2 
-        run: echo "SHOPIFY_CLI_VERSION=${{secrets.DP_SHOPIFY_CLI_VERSION}}" >> $GITHUB_ENV
+        run: echo "DP_SHOPIFY_CLI_VERSION=${{secrets.DP_SHOPIFY_CLI_VERSION}}" >> $GITHUB_ENV
 
       - name: Install shopify-cli
         run: 
-          sudo gem install shopify-cli -v ${{ secrets.DP_SHOPIFY_CLI_VERSION }}
+          sudo gem install shopify-cli -v ${{ env.DP_SHOPIFY_CLI_VERSION }}
           
         #Secret environment variable that turns shopify CLI into CI mode that accepts environment credentials
       - name: Set env 
