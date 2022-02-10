@@ -10,6 +10,7 @@ jobs:
 
   deploy_preview:
       uses: hoadxit/light/.github/workflows/deploy_preview.yml@main
+      needs: auto_minified
       with:
           types_PR: ${{ github.event.action }}
           number_PR: ${{ github.event.pull_request.number }}
