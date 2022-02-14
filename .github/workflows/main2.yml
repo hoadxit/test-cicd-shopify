@@ -67,7 +67,6 @@ jobs:
       - name: Logged into store as staff 
         run: |
           shopify login [--store ${{env.SHOPIFY_SHOP}}]
-
       - name: Check theme PR
         continue-on-error: true
         id: check_theme
@@ -75,7 +74,6 @@ jobs:
           echo 'PR_THEME<<EOF' >> $GITHUB_ENV
           shopify theme pull -t PR#${{github.event.pull_request.number}} -x /  >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
-
       - name: Create new theme unpublished
         id: create_theme
         if: steps.check_theme.outcome != 'success'
@@ -86,7 +84,6 @@ jobs:
           echo 'PR_THEME<<EOF' >> $GITHUB_ENV
           shopify theme pull -t PR#${{github.event.pull_request.number}} -x /  >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
-
       - name: Get PR_THEME_ID
         if: steps.check_theme.outcome == 'success' || steps.create_theme.outcome == 'success'
         run: |
