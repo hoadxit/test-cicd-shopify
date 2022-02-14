@@ -1,20 +1,3 @@
-.ok22-1css-new {
-    position: absolute;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    grid-column: auto;
-}
-
-.dhx_no-select {
-    font: 1em sans-serif;
-}
-
-.dhx_no-select:not(.dhx_no-select--resize):not(.dhx_no-select--pointer) * {
-}
-
-.dhx_no-select--pointer {
-direction: rtl;
-}
-
-.dhx_no-select--resize {
+body{
+    background: blue !important;
 }
