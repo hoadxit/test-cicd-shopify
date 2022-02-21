@@ -10,15 +10,13 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
 
-      - run: cd tailwind
-        with:
-          ref: ${{ github.head_ref }}
-
       - uses: actions/setup-node@v2
         with:
           node-version: '16.14.0'
           cache: 'npm'
-          ref: ${{ github.head_ref }}
+          cache-dependency-path: |
+            tailwind/package-lock.json
+
       - run: |
           npm install
           npm test
