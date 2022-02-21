@@ -14,17 +14,18 @@ jobs:
         with:
           node-version: '16.14.0'
 
-      - run: |
+      - name: install npm
+        continue-on-error: true
+        run: |
           cd tailwind
           npm install
-          npm test
-          node -v
 
-
-                   
-
-      # - name: Auto committing minified files
-      #   uses: stefanzweifel/git-auto-commit-action@v4
-      #   with:
-      #     commit_message: "Github Action: Auto Minified JS and CSS files"
-  
+      - name: prod tailwind css
+        run: |
+          cd tailwind
+          npm run prod
+      
+      - name: Auto committing tailwind file
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Github Action: Auto Reduce tailwind css"
