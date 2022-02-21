@@ -5,14 +5,11 @@ on:
 jobs:
   reduce_tailwind:
       runs-on: ubuntu-latest
-      needs: minified
-      if: ${{ always() }}
       steps:
       - uses: actions/checkout@v2
         with:
           ref: ${{ github.head_ref }}
 
-     
       - uses: actions/setup-node@v2
         with:
           node-version: '16.14.0'
