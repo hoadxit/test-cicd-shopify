@@ -9,12 +9,16 @@ jobs:
       - uses: actions/checkout@v2
         with:
           ref: ${{ github.head_ref }}
+
       - run: cd tailwind
+        with:
+          ref: ${{ github.head_ref }}
 
       - uses: actions/setup-node@v2
         with:
           node-version: '16.14.0'
           cache: 'npm'
+          ref: ${{ github.head_ref }}
       - run: |
           npm install
           npm test
