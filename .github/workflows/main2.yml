@@ -14,8 +14,12 @@ jobs:
         with:
           node-version: '16.14.0'
           cache: 'npm'
-      - run: npm install
-      - run: npm test
+        run: |
+          cd tailwind
+          npm install
+          npm test
+          node -v
+
 
                    
 
