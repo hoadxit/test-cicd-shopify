@@ -132,6 +132,7 @@ jobs:
           echo 'EOF' >> $GITHUB_ENV
       
       - name: Update theme 
+        continue-on-error: true
         if: steps.check_theme.outcome == 'success'
         run: shopify theme push -t ${{env.PR_THEME_ID}}
 
