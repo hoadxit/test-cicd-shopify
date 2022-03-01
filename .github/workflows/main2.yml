@@ -25,7 +25,9 @@ jobs:
       needs: check_change
       if: github.event.action == 'opened' || needs.check_change.outputs.is_changed == 'true'
       steps:
-      - uses: actions/checkout@v2 
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
 
       - name: Auto Minify JS
         if: github.event.action == 'opened' || contains(needs.check_change.outputs.list_files, 'theme.js')
@@ -44,14 +46,48 @@ jobs:
         with:
           commit_message: "Github Action: Auto Minified JS and CSS files"
 
+  reduce_tailwind:
+      name: 'Reduce tailwind'
+      needs: minified
+      if: ${{ always() }}
+      runs-on: ubuntu-latest
+      steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Setup nodejs
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.14.0'
+
+      - name: install npm
+        continue-on-error: true
+        run: |
+          cd tailwind
+          npm install
+
+      - name: Reduce tailwind css
+        continue-on-error: true
+        run: |
+          cd tailwind
+          npm run prod
+      
+      - name: Auto committing tailwind file
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Github Action: Auto reduce tailwind css"
+
   deploy_preview:
     name: 'Deploy Preview'
-    needs: minified
+    needs: reduce_tailwind
     if: ${{ always() }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
 
       - name: Install shopify-cli
         run: 
@@ -67,7 +103,6 @@ jobs:
       - name: Logged into store as staff 
         run: |
           shopify login [--store ${{env.SHOPIFY_SHOP}}]
-
       - name: Check theme PR
         continue-on-error: true
         id: check_theme
@@ -75,7 +110,6 @@ jobs:
           echo 'PR_THEME<<EOF' >> $GITHUB_ENV
           shopify theme pull -t PR#${{github.event.pull_request.number}} -x /  >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
-
       - name: Create new theme unpublished
         id: create_theme
         if: steps.check_theme.outcome != 'success'
@@ -86,7 +120,6 @@ jobs:
           echo 'PR_THEME<<EOF' >> $GITHUB_ENV
           shopify theme pull -t PR#${{github.event.pull_request.number}} -x /  >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
-
       - name: Get PR_THEME_ID
         if: steps.check_theme.outcome == 'success' || steps.create_theme.outcome == 'success'
         run: |
@@ -99,6 +132,7 @@ jobs:
           echo 'EOF' >> $GITHUB_ENV
       
       - name: Update theme 
+        continue-on-error: true
         if: steps.check_theme.outcome == 'success'
         run: shopify theme push -t ${{env.PR_THEME_ID}}
 
