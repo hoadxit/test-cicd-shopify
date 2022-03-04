@@ -3,85 +3,8 @@ on:
   pull_request:
     types: [opened, reopened, synchronize, closed]
 jobs:
-  check_change:
-    runs-on: ubuntu-latest
-    outputs: 
-      is_changed: ${{steps.changed-files.outputs.any_changed}}
-      list_files: ${{steps.changed-files.outputs.all_modified_files}}
-    steps:
-      - uses: actions/checkout@v2 
-        with:
-          fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
-
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@v11.9
-        with:
-          files: 
-             assets/theme.js
-             assets/theme.css
-  minified:
-      runs-on: ubuntu-latest
-      needs: check_change
-      if: github.event.action == 'opened' || needs.check_change.outputs.is_changed == 'true'
-      steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: ${{ github.head_ref }}
-
-      - name: Auto Minify JS
-        if: github.event.action == 'opened' || contains(needs.check_change.outputs.list_files, 'theme.js')
-        uses: nizarmah/auto-minify@v2.1
-        with: 
-          directory: "assets/theme.js"
-
-      - name: Auto Minify Css
-        if: github.event.action == 'opened' || contains(needs.check_change.outputs.list_files, 'theme.css')
-        uses: nizarmah/auto-minify@v2.1
-        with: 
-          directory: "assets/theme.css"
-
-      - name: Auto committing minified files
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: "Github Action: Auto Minified JS and CSS files"
-
-  reduce_tailwind:
-      name: 'Reduce tailwind'
-      needs: minified
-      if: ${{ always() }}
-      runs-on: ubuntu-latest
-      steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: ${{ github.head_ref }}
-
-      - name: Setup nodejs
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16.14.0'
-
-      - name: install npm
-        continue-on-error: true
-        run: |
-          cd tailwind
-          npm install
-
-      - name: Reduce tailwind css
-        continue-on-error: true
-        run: |
-          cd tailwind
-          npm run prod
-      
-      - name: Auto committing tailwind file
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: "Github Action: Auto reduce tailwind css"
-
   deploy_preview:
     name: 'Deploy Preview'
-    needs: reduce_tailwind
-    if: ${{ always() }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -112,7 +35,7 @@ jobs:
           echo 'EOF' >> $GITHUB_ENV
           
       - name: Log 01
-        run: echo steps.check_theme.outcome
+        run: echo ${{steps.check_theme.outcome}}
       - name: Create new theme unpublished
         id: create_theme
         if: steps.check_theme.outcome != 'success'
@@ -123,6 +46,8 @@ jobs:
           echo 'PR_THEME<<EOF' >> $GITHUB_ENV
           shopify theme pull -t PR#${{github.event.pull_request.number}} -x /  >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
+      - name: Log 02
+        run: echo ${{steps.create_theme.outcome}}
       - name: Get PR_THEME_ID
         if: steps.check_theme.outcome == 'success' || steps.create_theme.outcome == 'success'
         run: |
