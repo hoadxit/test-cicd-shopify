@@ -48,7 +48,6 @@ jobs:
           echo 'EOF' >> $GITHUB_ENV
           echo "isCreate=true" >> $GITHUB_ENV
           
-
       - name: Log 02
         run: echo ${{env.isCreate}}
       - name: Get PR_THEME_ID
