@@ -46,10 +46,11 @@ jobs:
           echo 'PR_THEME<<EOF' >> $GITHUB_ENV
           shopify theme pull -t PR#${{github.event.pull_request.number}} -x /  >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
+          echo "isCreate=true" >> $GITHUB_ENV
           
 
       - name: Log 02
-        run: echo ${{steps.create_theme.conclusion}}
+        run: echo ${{env.isCreate}}
       - name: Get PR_THEME_ID
         if: steps.check_theme.outcome == 'success' || steps.create_theme.outcome == 'success'
         run: |
